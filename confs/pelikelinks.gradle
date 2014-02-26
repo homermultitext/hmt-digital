@@ -1,17 +1,18 @@
-/* URLs for CITE services, Image Citation Tool, and CITEKit.
+/* URLs for CITE services, Image Citation Tool, and CITEKit
+* installed on pelike.hpcc.uh.edu
 */
 
 
 project.ext {
 
     // Where you want to provide query forms for the services
-    queryforms = "http://pelike.hpcc.uh.edu/citeservlet/svcforms"
+    queryforms = "http://pelike.hpcc.uh.edu/hmtdigital/svcforms"
 
     // The four CITE services	    
-    texts  = "http://pelike.hpcc.uh.edu/citeservlet/texts"
-    indices =  "http://pelike.hpcc.uh.edu/citeservlet/indices"
-    collections = "http://pelike.hpcc.uh.edu/citeservlet/collections"
-    images = "http://pelike.hpcc.uh.edu/citeservlet/images"
+    texts  = "http://pelike.hpcc.uh.edu/hmtdigital/texts"
+    indices =  "http://pelike.hpcc.uh.edu/hmtdigital/indices"
+    collections = "http://pelike.hpcc.uh.edu/hmtdigital/collections"
+    images = "http://pelike.hpcc.uh.edu/hmtdigital/images"
 
 
     // XSLT to use for constructing IIPMooViewer replies
