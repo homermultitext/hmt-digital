@@ -20,7 +20,7 @@ project.ext {
     /* Project-specific values                    */
     /* *****************************************  */		    
     // Where you will install or run citeservlet
-    homeUrl = "http://beta.hpcc.uh.edu/hmtdigital"
+    homeUrl = "http://beta.hpcc.uh.edu/tomcat/hmtdigital"
 
     // Strings for labelling web pages
     projectlabel = "HMT Digital"

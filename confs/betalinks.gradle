@@ -6,14 +6,13 @@
 project.ext {
 
     // Where you want to provide query forms for the services
-    queryforms = "http://beta.hpcc.uh.edu/hmtdigital/svcforms"
+    queryforms = "http://beta.hpcc.uh.edu/tomcat/hmtdigital/svcforms"
 
     // The four CITE services	    
-    texts  = "http://beta.hpcc.uh.edu/hmtdigital/texts"
-    indices =  "http://beta.hpcc.uh.edu/hmtdigital/indices"
-    collections = "http://beta.hpcc.uh.edu/hmtdigital/collections"
-    images = "http://beta.hpcc.uh.edu/hmtdigital/images"
-
+    texts  = "http://beta.hpcc.uh.edu/tomcat/hmtdigital/texts"
+    indices =  "http://beta.hpcc.uh.edu/tomcat/hmtdigital/indices"
+    collections = "http://beta.hpcc.uh.edu/tomcat/hmtdigital/collections"
+    images = "http://beta.hpcc.uh.edu/tomcat/hmtdigital/images"
 
     // XSLT to use for constructing IIPMooViewer replies
     mooxslt = "xslt/citeimg_getiipmooviewer.xsl"
