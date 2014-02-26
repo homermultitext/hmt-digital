@@ -15,6 +15,8 @@ def slurper = new groovy.json.JsonSlurper()
 def imgReply = slurper.parseText(svcReply)
 
 
+
+
 html.html {
     head {
         title("HMT Digital")
@@ -30,13 +32,17 @@ html.html {
     	
     	article (role : "main") {
 	  h2("Images of manuscripts")
-	  p("Browse")
+	  
+	  a (href: "mss.html") {
+
+	    img(src: "http://beta.hpcc.uh.edu/fcgi-bin/iipsrv.fcgi?OBJ=IIP,1.0&FIF=/project/homer/pyramidal/VenA/VA012RN-0013.tif&RGN=0.143,0.0907,0.391,0.1792&WID=400&CVT=JPEG")
+	  }
+
 
 	  h2("Editions")
 	  
 	  p("Read scholia on manuscripts…")
 
-	  p("an image:")
 	  form (action : "scholia", method : "get") {
 	    input (type : "text", name : "urn", value : demoText, size: "60")
 	    input (type : "submit", value : "View Scholia")

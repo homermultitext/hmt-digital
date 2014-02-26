@@ -23,7 +23,7 @@ project.ext {
     homeUrl = "http://localhost:8080/citeservlet"
 
     // Strings for labelling web pages
-    projectlabel = "Homer Multitext project"
+    projectlabel = "HMT Digital"
 
     // Text to inject into header, footer and nav elements
     htmlnav = "HMT digital: <a href='home'>Home</a>"
