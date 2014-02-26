@@ -1,6 +1,7 @@
 # hmtdigital: digital services of the Homer Multitext project
 
-This gradle project manages customizations adapting the generic `citeservlet` to the Homer Multitext project.   
+This git repository is for customizations of the generic `citeservlet` to 
+provide digital services for the Homer Multitext project.   
 
 
 ## Prerequisites ##
