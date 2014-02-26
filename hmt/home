@@ -17,31 +17,53 @@ def imgReply = slurper.parseText(svcReply)
 
 html.html {
     head {
-        title("@projectlabel@: CITE services")
+        title("HMT Digital")
 		link(type : "text/css", rel : "stylesheet", href : "@coreCss@", title : "CSS stylesheet")
     }
     
     body {
     
     	header (role : "banner"){
-            h1("@projectlabel@: CITE services")
+            h1("Digital services from the Homer Multitext project")
             nav(role : "navigation")
     	}
     	
     	article (role : "main") {
+	  h2("Images of manuscripts")
+	  p("Browse")
 
-            p("This site hosts serves material you can identify and retrieve by canonical reference using URNs.")
+	  h2("Editions")
+	  
+	  p("Read scholia on manuscripts…")
+
+	  p("an image:")
+	  form (action : "scholia", method : "get") {
+	    input (type : "text", name : "urn", value : demoText, size: "60")
+	    input (type : "submit", value : "View Scholia")
+	  }
+	  
+	  h2("Other utilities")
 
 	    ul {
                 li {
-                    mkp.yield ("See an ")
-                    a(href : "overview", "overview of contents")
+                    mkp.yield ("See an automatically generated")
+                    a(href : "overview", "summary of archival material")
 		    mkp.yield (" (with links to browse contents)")
                 }
                 li {
                     a(href : "svcforms", "Look up material by URN")
                 }
             }
+
+	    h2("Links")
+	    ul {
+	      li {
+		mkp.yield "The Homer Multitext project "
+		a(href: "http://www.homermultitext.org", "web site")
+	      }
+	      
+	    }
+
         }
         footer("@htmlfooter@")
     }

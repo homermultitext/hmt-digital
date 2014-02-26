@@ -15,3 +15,7 @@ This gradle project manages customizations adapting the generic `citeservlet` to
 In your clone of `citeservlet`, set the value of `customDir` to the `hmt` directory of this repository.   You can then use the generic `gradle war` or `gradle jettyRunWar` tasks within `citeservlet`.
 
 See the documentation in `citeservlet` for more details on how you can configure and customize it.
+
+### `citeservlet` configurations ##
+
+The `confs` dir includes configuration files for running HMT Digital locally, or for installing on HMT project systems.
