@@ -103,7 +103,6 @@ if (error) {
 	em("Iliad")
       }
 
-      pre(queryString)
       p {
 	em("Iliad")
 	mkp.yield " ${ref} occurs in:"
