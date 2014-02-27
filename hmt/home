@@ -41,12 +41,60 @@ html.html {
 
 	  h2("Editions")
 	  
-	  p("Read scholia on manuscripts…")
+
+	  
+	  h3 {
+
+	    mkp.yield "Scholia and "
+	    em("Iliad")
+	    mkp.yield(" in context together")
+	  }
+
+
+	  p {
+	    mkp.yield("Look up by ")
+	    em("Iliad")
+	    mkp.yield (" line:")
+	  }
+
 
 	  form (action : "scholia", method : "get") {
-	    input (type : "text", name : "urn", value : demoText, size: "60")
-	    input (type : "submit", value : "View Scholia")
+	    label(for: "txturn1", "Iliad line")
+	    input (type : "text", name : "urn", value : demoText, size: "60", id : "txturn1")
+	    input (type : "submit", value : "See texts")
 	  }
+
+
+
+
+
+
+	  h3 {
+	    em("Iliad")
+	    mkp.yield(" text with page image")
+	  }
+
+	  p {
+	    mkp.yield("Look up by ")
+	    em("Iliad")
+	    mkp.yield (" line:")
+	  }
+	  form (action : "facs", method : "get") {
+	    label(for: "ilurn", "Iliad line")
+	    input (type : "text", name : "urn", value : demoText, size: "60", id : "ilurn")
+	    input (type : "submit", value : "See facsimile")
+	  }
+
+
+	  p {
+	    mkp.yield("Look up by MS page:")
+	  }
+	  form (action : "facs", method : "get") {
+	    label(for: "pgurn","Page")
+	    input (type : "text", name : "urn", value : demoObject, size: "60", id : "pgurn")
+	    input (type : "submit", value : "See facsimile")
+	  }
+
 	  
 	  h2("Other utilities")
 

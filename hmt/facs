@@ -1,0 +1,134 @@
+/*
+  Simple facsimile display of page image + Iliad text.
+  Single urn parameter:  may be either a CTS URN with Iliad line
+  to read, or a CITE URN with page to read.
+ */
+import groovyx.net.http.*
+import groovyx.net.http.HttpResponseException
+import static groovyx.net.http.ContentType.*
+import static groovyx.net.http.Method.*
+
+
+import edu.harvard.chs.cite.CtsUrn
+import edu.harvard.chs.cite.CiteUrn
+
+response.setContentType("text/html")
+response.setCharacterEncoding('UTF-8')
+response.setHeader( "Access-Control-Allow-Origin", "*")
+
+
+/*
+<http://www.homermultitext.org/hmt/rdf/hasDefaultImage>
+ <http://www.w3.org/1999/02/22-rdf-syntax-ns#label> 
+
+<http://www.homermultitext.org/cite/rdf/hasOnIt> 
+ <http://purl.org/ontology/olo/core#next> 
+ <http://purl.org/ontology/olo/core#previous> 
+ */
+
+
+
+
+/**
+ * Submits an encoded query to the configured SPARQL endpoint,
+ * and returns the reply.
+ * @param acceptType MIME type to specify for reply.
+ * @param query SPARQL query to submit.
+ * @returns SPARQL reply, as a String.
+ */
+String getSparqlReply(String acceptType, String query) {
+  String replyString
+  def encodedQuery = URLEncoder.encode(query)
+  def q = "@sparqls@query?query=${encodedQuery}"
+  if (acceptType == "application/json") {
+    q +="&output=json"
+  }
+
+  def http = new HTTPBuilder(q)
+  http.request( Method.GET, ContentType.TEXT ) { req ->
+    headers.Accept = acceptType
+    response.success = { resp, reader ->
+      replyString = reader.text
+    }
+  }
+  return replyString
+}
+
+
+
+
+
+
+CtsUrn iliadUrn = null
+CiteUrn pgUrn = null
+
+
+
+String urnStr = request.getParameter("urn")
+boolean foundUrn = false
+try {
+  iliadUrn = new CtsUrn(urnStr)
+  foundUrn = true
+} catch (Exception e) {
+}
+try {
+  pgUrn = new CiteUrn(urnStr)
+  foundUrn = true
+} catch (Exception e) {
+}
+
+
+if (!foundUrn) {
+  println "<error>Valid URN required</error>"
+} else {
+
+  String msg
+  if (iliadUrn) {
+    msg = "search by text ${iliadUrn}"
+  } else {
+    msg = "search by folio ${pgUrn}"
+  }
+
+  def slurper = new groovy.json.JsonSlurper()
+
+  //textIllustrations = slurper.parseText(getSparqlReply("application/json", queryString))
+
+
+
+
+
+  html.html {
+    head {
+      title("@projectlabel@: facsimile reader")
+      link(type : "text/css", rel : "stylesheet", href : "css/browsers.css", title : "CSS stylesheet")
+      link(type : "text/css", rel : "stylesheet", href : "@coreCss@", title : "CSS stylesheet")
+      script(type: "text/javascript", src : "js/jquery.min.js", "  ")
+      script(type: "text/javascript", src : "@citekit@", "  ")
+    }
+
+    body {
+
+      header {
+
+	nav {
+	  mkp.yield "@projectlabel@: "
+	  a(href : '@homeUrl@', "Home")
+	}
+	h2("@projectlabel@: facsimile")
+      }
+
+      article {
+	p(msg)
+      }    
+      // citekit magic:
+      ul (id: "citekit-sources") {
+	li (class : "citekit-source cite-text citekit-default", id : "defaulttext", "@texts@") 
+	li (class : "citekit-source cite-image citekit-default", id : "defaultimage", "data-image-w" : "2000",  "@images@" )
+	li (class : "citekit-source cite-collection citekit-default", id : "defaultcollection", "@collections@" )
+      }
+    }
+    footer("@htmlfooter@")
+  }
+}
+
+
