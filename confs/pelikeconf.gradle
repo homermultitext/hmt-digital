@@ -42,4 +42,6 @@ project.ext {
     detailWidth = "9000"
 
     coreCss = "css/hmt-core.css"
+    ckImgSize = "1000"
 }
+

@@ -223,7 +223,7 @@ if (!foundUrn) {
       // citekit magic:
       ul (id: "citekit-sources") {
 	li (class : "citekit-source cite-text citekit-default", id : "defaulttext", "@texts@") 
-	li (class : "citekit-source cite-image citekit-default", id : "defaultimage", "data-image-w" : "2000",  "@images@" )
+	li (class : "citekit-source cite-image citekit-default", id : "defaultimage", "data-image-w" : "@ckImgSize@",  "@images@" )
 	li (class : "citekit-source cite-collection citekit-default", id : "defaultcollection", "@collections@" )
       }
     }
