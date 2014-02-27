@@ -48,7 +48,11 @@ html.html {
     }
   }
 
-  h3("Start from line")
+  h3 {
+    mkp.yield ("Start from ")
+    em("Iliad")
+    mkp.yield (" line")
+  }
 
   p {
     mkp.yield("Find manuscript pages for ")
