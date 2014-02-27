@@ -42,6 +42,6 @@ project.ext {
     detailWidth = "9000"
 
     coreCss = "css/hmt-core.css"
-    ckImgSize = "1000"
+    ckImgSize = "800"
     defaultContext = "5"
 }
