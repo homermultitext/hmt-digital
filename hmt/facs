@@ -127,7 +127,7 @@ try {
 
 
 if (!foundUrn) {
-  response.setContentType("text/html")
+  response.setContentType("text/plain")
   println "Please include a parameter named 'urn' with either a valid reference to a line of the Iliad or to a manuscript page."
 
 } else {

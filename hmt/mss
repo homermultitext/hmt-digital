@@ -1,0 +1,68 @@
+/**
+Do this as a groovlet now so we can develop it into a query off the graph that:
+
+- collects page models of codices from the urn:cite:hmt:codices collections
+- finds first element in each 
+*/
+
+
+html.html {
+  head {
+    title("@projectlabel@: manuscripts")
+    link(type : "text/css", rel : "stylesheet", href : "css/browsers.css", title : "CSS stylesheet")
+    link(type : "text/css", rel : "stylesheet", href : "@coreCss@", title : "CSS stylesheet")
+    script(type: "text/javascript", src : "js/jquery.min.js", "  ")
+    script(type: "text/javascript", src : "@citekit@", "  ")
+  }
+  
+  body {
+
+    header {
+      nav {
+	mkp.yield "@projectlabel@: "
+	a(href : '@homeUrl@', "Home")
+      }
+    }
+
+    h2("Manuscripts")
+    
+    p("Coming soon: an automatically generated overview of our manuscripts.")
+
+    p("For now, you can use our facsimile browser in either of two ways:")
+
+
+    h3("Start from MS page")
+    /*
+    p("Cite a page in one of these manuscripts:")
+    table {
+      tr {
+	th("URN")
+	th("Description")
+      }
+      }*/
+
+    form (action : "facs", method : "get") {
+      label(for: "pgurn","Page")
+      input (type : "text", name : "urn", value : "@demoObject@", size: "60", id : "pgurn")
+      input (type : "submit", value : "See facsimile")
+    }
+  }
+
+  h3("Start from line")
+
+  p {
+    mkp.yield("Find manuscript pages for ")
+    em("Iliad")
+    mkp.yield(" reference (book.line):")
+
+    form (action : "iliad", method : "get") {
+      label(for: "ref","book.line")
+      input (type : "text", name : "ref", value : "1.1", size: "10", id : "ref")
+      input (type : "submit", value : "See occurrences")
+    }    
+  }
+
+}
+
+
+

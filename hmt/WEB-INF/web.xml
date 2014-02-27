@@ -89,6 +89,17 @@
         <url-pattern>/facs</url-pattern>
     </servlet-mapping>
 
+    <servlet-mapping>
+        <servlet-name>GroovyServlet</servlet-name>
+        <url-pattern>/mss</url-pattern>
+    </servlet-mapping>
+
+
+    <servlet-mapping>
+        <servlet-name>GroovyServlet</servlet-name>
+        <url-pattern>/iliad</url-pattern>
+    </servlet-mapping>
+
 
     <welcome-file-list>
         <welcome-file>home</welcome-file>

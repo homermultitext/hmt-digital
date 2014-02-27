@@ -31,30 +31,25 @@ html.html {
     	}
     	
     	article (role : "main") {
-	  h2("Images of manuscripts")
-	  
-	  a (href: "mss.html") {
 
-	    img(src: "http://beta.hpcc.uh.edu/fcgi-bin/iipsrv.fcgi?OBJ=IIP,1.0&FIF=/project/homer/pyramidal/VenA/VA012RN-0013.tif&RGN=0.143,0.0907,0.391,0.1792&WID=400&CVT=JPEG")
+	h2("Manuscripts and editions")
+
+	ul { 
+	  li {
+	    mkp.yield "Read in-progress"
+	    a(href: "mss", "facsimile editions")
+	    mkp.yield (" (images with edition of ")
+	    em("Iliad")
+	    mkp.yield (" and scholia)")
 	  }
 
-
-	  h2("Editions")
-	  
-
-	  
-	  h3 {
-
-	    mkp.yield "Scholia and "
+	  li {
+	    mkp.yield("Read scholia and ")
 	    em("Iliad")
-	    mkp.yield(" in context together")
-	  }
-
-
-	  p {
-	    mkp.yield("Look up by ")
+	    mkp.yield " in context"
+	    mkp.yield (" (look up by ")
 	    em("Iliad")
-	    mkp.yield (" line:")
+	    mkp.yield " line)"
 	  }
 
 
@@ -64,28 +59,12 @@ html.html {
 	    input (type : "submit", value : "See texts")
 	  }
 
-
-
-
-
-
-	  h3 {
-	    em("Iliad")
-	    mkp.yield(" text with page image")
+	  li {
+	    mkp.yield "Browse "
+	    a(href: "mssimgs.html", "images of Homeric manuscripts")
 	  }
-
-	  p {
-	    mkp.yield("Look up by ")
-	    em("Iliad")
-	    mkp.yield (" line:")
-	  }
-	  form (action : "facs", method : "get") {
-	    label(for: "ilurn", "Iliad line")
-	    input (type : "text", name : "urn", value : demoText, size: "60", id : "ilurn")
-	    input (type : "submit", value : "See facsimile")
-	  }
-
-
+	}
+	/*
 	  p {
 	    mkp.yield("Look up by MS page:")
 	  }
@@ -94,7 +73,7 @@ html.html {
 	    input (type : "text", name : "urn", value : demoObject, size: "60", id : "pgurn")
 	    input (type : "submit", value : "See facsimile")
 	  }
-
+	*/
 	  
 	  h2("Other utilities")
 
