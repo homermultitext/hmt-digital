@@ -49,12 +49,12 @@ html.html {
 	    mkp.yield " in context"
 	    mkp.yield (" (look up by ")
 	    em("Iliad")
-	    mkp.yield " line)"
+	    mkp.yield " reference)"
 	  }
 
 
 	  form (action : "scholia", method : "get") {
-	    label(for: "txturn1", "Iliad line")
+	    label(for: "txturn1", "URN (including identification of MS)")
 	    input (type : "text", name : "urn", value : demoText, size: "60", id : "txturn1")
 	    input (type : "submit", value : "See texts")
 	  }

@@ -198,7 +198,7 @@ if (!foundUrn) {
 	}
 	h2("${pgLabel}")
       }
-
+      String warn = "(Image linked to view zoomable up to full resolution.)"
       article {
 	if (iliadLines.size() > 1) {
 	  CtsUrn firstLine = new CtsUrn(iliadLines[0])
@@ -208,18 +208,19 @@ if (!foundUrn) {
 	    mkp.yield "${firstLine.getPassageComponent()}-${lastLine.getPassageComponent()}"
 	  }
 	  String rng = "${firstLine}-${lastLine.getPassageComponent()}"
+	  p(warn)
 	  div (class: "citekit-compare") {
 	    blockquote(class: "cite-image", cite : "${imgUrn}", "${imgUrn}")
 	    blockquote(class: "cite-text", cite : "${rng}", "${rng}")
 	  }
 
 	} else {
+	  p(warn)
 	  blockquote(class: "cite-image", cite : "${imgUrn}", "${imgUrn}")
 	}
-
-
-
       }    
+
+
       // citekit magic:
       ul (id: "citekit-sources") {
 	li (class : "citekit-source cite-text citekit-default", id : "defaulttext", "@texts@") 
