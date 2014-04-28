@@ -11,7 +11,7 @@ project.ext {
     sparqls  = "http://localhost:3030/ds/"
 
     // 2. Absolute or relative URL of IIPSrv fast cgi (used by image service)
-    iipsrv = "http://pelike.hpcc.uh.edu/fcgi-bin/iipsrv.fcgi"
+    iipsrv = "http://pelike.hpcc.uh.edu/iipsrv"
 	
     inventoryDir = "localconf/inventories"
 
