@@ -18,8 +18,8 @@ project.ext {
     mooxslt = "xslt/citeimg_getiipmooviewer.xsl"
 
     // The image citation tool
-    ict = "http://beta.hpcc.uh.edu/tomcat/hmtcite/ict.html"
+    ict = "http://beta.hpcc.uh.edu/tomcat/hmtdigital/ict.html"
 
     // CiteKit javascript package
-    citekit = "http://beta.hpcc.uh.edu/tomcat/hmtcite/citekit/js/cite-jq.js"
+    citekit = "http://beta.hpcc.uh.edu/tomcat/hmtdigital/citekit/js/cite-jq.js"
 }
