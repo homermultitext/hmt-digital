@@ -19,8 +19,8 @@ project.ext {
     mooxslt = "xslt/citeimg_getiipmooviewer.xsl"
 
     // The image citation tool
-    ict = "http://pelike.hpcc.uh.edu/tomcat/hmtcite/ict.html"
+    ict = "http://pelike.hpcc.uh.edu/hmtdigital/ict.html"
 
     // CiteKit javascript package
-    citekit = "http://pelike.hpcc.uh.edu/tomcat/hmtcite/citekit/js/cite-jq.js"
+    citekit = "http://pelike.hpcc.uh.edu/tomcat/hmtdigital/citekit/js/cite-jq.js"
 }
