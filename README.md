@@ -7,7 +7,7 @@ provide digital services for the Homer Multitext project.
 ## Prerequisites ##
 
 - gradle: <http://www.gradle.org/>
-- a SPARQL endpoint serving HMT project data (your own, or a publicly visible one such as <http://beta.hpcc.uh.edu:3030/ds/>)
+- a SPARQL endpoint serving HMT project data (your own, or a publicly visible one such as <http://beta.hpcc.uh.edu:3030/>)
 - a clone of `citeservet`: <https://github.com/cite-architecture/citeservlet>
 
 
