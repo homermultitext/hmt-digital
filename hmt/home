@@ -19,21 +19,66 @@ def imgReply = slurper.parseText(svcReply)
 
 html.html {
     head {
-        title("HMT Digital")
-		link(type : "text/css", rel : "stylesheet", href : "@coreCss@", title : "CSS stylesheet")
+      title("HMT Digital")
+      link(type : "text/css", rel : "stylesheet", href : "@coreCss@", title : "CSS stylesheet")
     }
     
     body {
     
     	header (role : "banner"){
-            h1("Digital services from the Homer Multitext project")
-            nav(role : "navigation")
+            mkp.yield ("Digital services from the Homer Multitext project")
+            nav(role : "navigation") {
+	      ul {
+		li {
+		  mkp.yield("HMT: ")
+		  a(href: "http://www.homermultitext.org", "home")
+		}
+		li {
+		  mkp.yield("HMT Digital: ")
+		  a(href: "home", "home")
+		}
+
+		li {
+		  a(href: "mss", "browse MSS")
+		}
+	      }
+	    }
     	}
     	
     	article (role : "main") {
 
-	h2("Manuscripts and editions")
+	  h2("Browse manuscripts")
 
+	  h3("Start from MS page")
+
+	  form (action : "facs", method : "get") {
+	    label(for: "pgurn","Page URN")
+	    input (type : "text", name : "urn", value : "@demoObject@", size: "60", id : "pgurn")
+	    input (type : "submit", value : "See facsimile")
+	  }
+	  
+	  h3 {
+	    mkp.yield "Start from "
+	    em("Iliad")
+	    mkp.yield " line"
+	  }
+	  p {
+	    /*
+	    mkp.yield("Find manuscript pages for ")
+	    em("Iliad")
+	    mkp.yield(" reference (book.line):")
+	    */
+	    form (action : "iliad", method : "get") {
+	      label(for: "ref","book.line")
+	      input (type : "text", name : "ref", value : "1.1", size: "10", id : "ref")
+	      input (type : "submit", value : "See occurrences")
+	    }    
+	  }
+
+
+
+
+	/*
 	ul { 
 	  li {
 	    mkp.yield "Read in-progress"
@@ -42,29 +87,28 @@ html.html {
 	    em("Iliad")
 	    mkp.yield (" and scholia)")
 	  }
+	*/
 
-	  li {
-	    mkp.yield("Read scholia and ")
+	h2("Read scholia")
+	  p {
+	    mkp.yield ("Look up by full URN reference for")
 	    em("Iliad")
-	    mkp.yield " in context"
-	    mkp.yield (" (look up by ")
-	    em("Iliad")
-	    mkp.yield " reference)"
+	    mkp.yield " passage (including MS)"
 	  }
 
-
 	  form (action : "scholia", method : "get") {
-	    label(for: "txturn1", "URN (including identification of MS)")
+	    label(for: "txturn1", "Text passage URN")
 	    input (type : "text", name : "urn", value : demoText, size: "60", id : "txturn1")
 	    input (type : "submit", value : "See texts")
 	  }
 
+	/*
 	  li {
 	    mkp.yield "Browse "
 	    a(href: "mssimgs.html", "images of Homeric manuscripts")
 	  }
 	}
-	/*
+
 	  p {
 	    mkp.yield("Look up by MS page:")
 	  }
@@ -87,15 +131,6 @@ html.html {
                     a(href : "svcforms", "Look up material by URN")
                 }
             }
-
-	    h2("Links")
-	    ul {
-	      li {
-		mkp.yield "The Homer Multitext project "
-		a(href: "http://www.homermultitext.org", "web site")
-	      }
-	      
-	    }
 
         }
         footer("@htmlfooter@")

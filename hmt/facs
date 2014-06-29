@@ -129,7 +129,7 @@ try {
 if (!foundUrn) {
   response.setContentType("text/plain")
   println "Please include a parameter named 'urn' with either a valid reference to a line of the Iliad or to a manuscript page."
-
+  
 } else {
   response.setContentType("text/html")
   response.setCharacterEncoding('UTF-8')
@@ -162,7 +162,7 @@ if (!foundUrn) {
       iliadLines.add(b.ln.value)
     }
   }
-
+  
   
 
   html.html {
@@ -178,47 +178,62 @@ if (!foundUrn) {
 
       header {
 
-	nav {
-	  mkp.yield "@projectlabel@: "
-	  a(href : '@homeUrl@', "Home")
-	  if (prevPg != "") {
-	    mkp.yield " | "
-	    a(href: "facs?urn=${prevPg}", "previous page")
-	  } else {
-	    mkp.yield " | previous page"
-	  }
+	nav(role : "navigation") {
+	  ul {
+	    li {
+	      mkp.yield("HMT: ")
+	      a(href: "http://www.homermultitext.org", "home")
+	    }
+	    li {
+	      mkp.yield("HMT Digital: ")
+	      a(href: "home", "home")
+	    }
+	    li {
+	      a(href: "mss", "browse MSS")
+	    }
+	    li {
+	      mkp.yield "browse MS: "
 
-	  if (nxtPg != "") {
-	    mkp.yield " | "
-	    a(href: "facs?urn=${nxtPg}", "next page")
-	  } else {
-	    mkp.yield " | next page"
+	      if (prevPg != "") {
+		a(href: "facs?urn=${prevPg}", "previous page")
+	      } else {
+		mkp.yield " previous page"
+	      }
+	    }
+	    li {
+	      if (nxtPg != "") {
+		a(href: "facs?urn=${nxtPg}", "next page")
+	      } else {
+		mkp.yield "next page"
+	      }
+	    }
 	  }
-
 	}
-	h2("${pgLabel}")
       }
       String warn = "(Image linked to view zoomable up to full resolution.)"
       article {
-	if (iliadLines.size() > 1) {
-	  CtsUrn firstLine = new CtsUrn(iliadLines[0])
-	  CtsUrn lastLine = new CtsUrn(iliadLines[iliadLines.size() - 1])
-	  p {
-	    em("Iliad")
-	    mkp.yield "${firstLine.getPassageComponent()}-${lastLine.getPassageComponent()}"
-	  }
-	  String rng = "${firstLine}-${lastLine.getPassageComponent()}"
-	  p(warn)
-	  div (class: "citekit-compare") {
-	    blockquote(class: "cite-image", cite : "${imgUrn}", "${imgUrn}")
-	    blockquote(class: "cite-text", cite : "${rng}", "${rng}")
-	  }
+	h2("${pgLabel}")
 
-	} else {
+	  if (iliadLines.size() > 1) {
+	    CtsUrn firstLine = new CtsUrn(iliadLines[0])
+	    CtsUrn lastLine = new CtsUrn(iliadLines[iliadLines.size() - 1])
+	    p {
+	      em("Iliad")
+	      mkp.yield "${firstLine.getPassageComponent()}-${lastLine.getPassageComponent()}"
+	    }
+	    String rng = "${firstLine}-${lastLine.getPassageComponent()}"
+	    p(warn)
+	    div (class: "citekit-compare") {
+	      blockquote(class: "cite-image", cite : "${imgUrn}", "${imgUrn}")
+	      blockquote(class: "cite-text", cite : "${rng}", "${rng}")
+	    }
+	    
+	  } else {
 	  p(warn)
 	  blockquote(class: "cite-image", cite : "${imgUrn}", "${imgUrn}")
 	}
-      }    
+
+	}
 
 
       // citekit magic:
@@ -227,7 +242,8 @@ if (!foundUrn) {
 	li (class : "citekit-source cite-image citekit-default", id : "defaultimage", "data-image-w" : "@ckImgSize@",  "@images@" )
 	li (class : "citekit-source cite-collection citekit-default", id : "defaultcollection", "@collections@" )
       }
-    }
+	}
+
     footer("@htmlfooter@")
   }
 }

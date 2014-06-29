@@ -17,20 +17,28 @@ html.html {
   
   body {
 
-    header {
-      nav {
-	mkp.yield "@projectlabel@: "
-	a(href : '@homeUrl@', "Home")
+    header(role: "banner") {
+      mkp.yield ("Digital services from the Homer Multitext project")
+      nav(role: "navigation") {
+	
+	ul {
+	  li {
+	    mkp.yield("HMT: ")
+	    a(href: "http://www.homermultitext.org", "home")
+	  }
+	  li {
+	    mkp.yield("HMT Digital: ")
+	    a(href: "home", "home")
+	  }
+
+	  li {
+	    a(href: "mss", "browse MSS")
+	  }
+	}
       }
     }
 
     h2("Manuscripts")
-    
-    p("Coming soon: an automatically generated overview of our manuscripts.")
-
-    p("For now, you can use our facsimile browser in either of two ways:")
-
-
     h3("Start from MS page")
     /*
     p("Cite a page in one of these manuscripts:")
@@ -64,8 +72,9 @@ html.html {
       input (type : "text", name : "ref", value : "1.1", size: "10", id : "ref")
       input (type : "submit", value : "See occurrences")
     }    
-  }
 
+    footer("@htmlfooter@")
+  }
 }
 
 
