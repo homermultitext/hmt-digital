@@ -175,10 +175,9 @@ if (!foundUrn) {
     }
 
     body {
-
-      header {
-
-	nav(role : "navigation") {
+    header(role: "banner") {
+      mkp.yield ("Digital services from the Homer Multitext project")
+      nav(role: "navigation") {
 	  ul {
 	    li {
 	      mkp.yield("HMT: ")

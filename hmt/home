@@ -41,6 +41,10 @@ html.html {
 		li {
 		  a(href: "mss", "browse MSS")
 		}
+
+		li {
+		  a(href: "findscholia", "scholia")
+		}
 	      }
 	    }
     	}

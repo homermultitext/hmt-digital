@@ -39,21 +39,21 @@ String prefix = "prefix cts: <http://www.homermultitext.org/cts/rdf/>\nprefix ci
  * @returns SPARQL reply, as a String.
  */
 String getSparqlReply(String acceptType, String query) {
-        String replyString
-                def encodedQuery = URLEncoder.encode(query)
-                def q = "@sparqls@query?query=${encodedQuery}"
-                if (acceptType == "application/json") {
-                        q +="&output=json"
-                }
+  String replyString
+  def encodedQuery = URLEncoder.encode(query)
+  def q = "@sparqls@query?query=${encodedQuery}"
+  if (acceptType == "application/json") {
+    q +="&output=json"
+  }
 
-        def http = new HTTPBuilder(q)
-                http.request( Method.GET, ContentType.TEXT ) { req ->
-                        headers.Accept = acceptType
-                                response.success = { resp, reader ->
-                                        replyString = reader.text
-                                }
-                }
-        return replyString
+  def http = new HTTPBuilder(q)
+  http.request( Method.GET, ContentType.TEXT ) { req ->
+    headers.Accept = acceptType
+    response.success = { resp, reader ->
+      replyString = reader.text
+    }
+  }
+  return replyString
 }
 
 /** Formulates SPARQL query to retrieve an image-URN illustrating a CTS-URN
@@ -64,14 +64,14 @@ String getSparqlReply(String acceptType, String query) {
  */
 String illustrationQuery(String textUrn, String prefix) {
 
-        String reply = """
+  String reply = """
 ${prefix}
 
 select distinct ?picture where {
         <${textUrn}> cite:illustratedBy ?picture .
 }
 """
-                return reply
+  return reply
 }
 
 /** Formulates SPARQL query to retrieve Scholia and their illustrating Img-ROIs
@@ -108,75 +108,84 @@ ORDER BY ?edCites
 
 if (!done){
 
-String queryString;
-queryString = illustrationQuery(urnStr, prefix);
-textIllustrations = slurper.parseText(getSparqlReply("application/json", queryString))
-scholiaFound = slurper.parseText(getSparqlReply("application/json",scholiaQuery(urnStr, prefix, myPassage)));
+  String queryString;
+  queryString = illustrationQuery(urnStr, prefix);
+  textIllustrations = slurper.parseText(getSparqlReply("application/json", queryString))
+  scholiaFound = slurper.parseText(getSparqlReply("application/json",scholiaQuery(urnStr, prefix, myPassage)));
+  
+  html.html {
+    head {
+      title("@projectlabel@: Scholia Reader")
+      link(type : "text/css", rel : "stylesheet", href : "css/browsers.css", title : "CSS stylesheet")
+      link(type : "text/css", rel : "stylesheet", href : "@coreCss@", title : "CSS stylesheet")
+      script(type: "text/javascript", src : "js/jquery.min.js", "  ")
+      script(type: "text/javascript", src : "@citekit@", "  ")
+    }
 
-html.html {
-        head {
-                title("@projectlabel@: Scholia Reader")
-                        link(type : "text/css", rel : "stylesheet", href : "css/browsers.css", title : "CSS stylesheet")
-                        link(type : "text/css", rel : "stylesheet", href : "@coreCss@", title : "CSS stylesheet")
-                        script(type: "text/javascript", src : "js/jquery.min.js", "  ")
-                        script(type: "text/javascript", src : "@citekit@", "  ")
-        }
+    body {
+      header(role: "banner") {
+	mkp.yield ("Digital services from the Homer Multitext project")
+	nav(role: "navigation") {
+	  ul {
+	    li {
+	      mkp.yield("HMT: ")
+	      a(href: "http://www.homermultitext.org", "home")
+	    }
+	    li {
+	      mkp.yield("HMT Digital: ")
+	      a(href: "home", "home")
+	    }
+	    li {
+	      a(href: "mss", "browse MSS")
+	    }
+	  }
+	}
+      }
 
-        body {
+      article {
+	h2("@projectlabel@: Scholia Reader")
 
-                header {
+	h3("${scholiaFound.results.bindings.size()} Scholia for ${myPassage}")
 
-		  nav {
-		    mkp.yield "@projectlabel@: "
-		    
-		    a(href : '@homeUrl@', "Home")
-		  }
-		  h2("@projectlabel@: Scholia Reader")
-                }
+	String currentMs = ""
 
-                article {
+	scholiaFound.results.bindings.each { b ->
+	  if (b.edCites.value != currentMs){
+	    currentMs = b.edCites.value
+	    h3("Manuscript ${b.edCites.value}")
+	    blockquote(class: "cite-text", cite : "${b.edCites.value}", "${b.edCites.value}")
+	      
+	    queryString = illustrationQuery(urnStr, prefix);
+	    textIllustrations = slurper.parseText(getSparqlReply("application/json", queryString))
+	    textIllustrations.results.bindings.each { c ->
+	      blockquote(class: "cite-image", cite : "${c.picture.value}", "${c.picture.value}")
+	      h3("Scholia")
+	    }    
+	  }  
 
+	  div (class : "citekit-compare") {
+	    if (b.scholia.value.substring(4,8) == 'cite'){
+	      blockquote(class: "cite-collection", cite : "${b.scholia.value}", "${b.scholia.value}")
+	    } else {
+	      blockquote(class: "cite-text", cite : "${b.scholia.value}", "${b.scholia.value}")
+	    }
+	    if (b?.scholPic?.value){
+	      blockquote(class: "cite-image", cite : "${b?.scholPic?.value}", "${b?.scholPic?.value}")
+	    }
+	  }
+	}    
 
-    h2("${scholiaFound.results.bindings.size()} Scholia for ${myPassage}")
-
-    String currentMs = ""
-
-    scholiaFound.results.bindings.each { b ->
-        if (b.edCites.value != currentMs){
-            currentMs = b.edCites.value
-            h3("Manuscript ${b.edCites.value}")
-            blockquote(class: "cite-text", cite : "${b.edCites.value}", "${b.edCites.value}")
-
-            queryString = illustrationQuery(urnStr, prefix);
-            textIllustrations = slurper.parseText(getSparqlReply("application/json", queryString))
-            textIllustrations.results.bindings.each { c ->
-            blockquote(class: "cite-image", cite : "${c.picture.value}", "${c.picture.value}")
-            h3("Scholia")
-        }    
-        }  
-                div (class : "citekit-compare") {
-                    //blockquote(class: "cite-text", cite : "${b.edCites.value}", "${b.edCites.value}")
-                    if (b.scholia.value.substring(4,8) == 'cite'){
-                            blockquote(class: "cite-collection", cite : "${b.scholia.value}", "${b.scholia.value}")
-                    } else {
-                            blockquote(class: "cite-text", cite : "${b.scholia.value}", "${b.scholia.value}")
-                    }
-                    if (b?.scholPic?.value){
-                            blockquote(class: "cite-image", cite : "${b?.scholPic?.value}", "${b?.scholPic?.value}")
-                    }
-                }
-        
-    }    
-        // citekit magic:
-        ul (id: "citekit-sources") {
-                li (class : "citekit-source cite-text citekit-default", id : "defaulttext", "@texts@") 
-                li (class : "citekit-source cite-image citekit-default", id : "defaultimage", "data-image-w" : "2000",  "@images@" )
-                li (class : "citekit-source cite-collection citekit-default", id : "defaultcollection", "@collections@" )
-        }
+	// citekit magic:
+	ul (id: "citekit-sources") {
+	  li (class : "citekit-source cite-text citekit-default", id : "defaulttext", "@texts@") 
+	  li (class : "citekit-source cite-image citekit-default", id : "defaultimage", "data-image-w" : "2000",  "@images@" )
+	  li (class : "citekit-source cite-collection citekit-default", id : "defaultcollection", "@collections@" )
+	}
+      }
+      footer("@htmlfooter@")
+    }
+  }
 }
-                footer("@htmlfooter@")
-        }
-}
-}
+
 
 

@@ -19,6 +19,13 @@
 
     <servlet-mapping>
         <servlet-name>GroovyServlet</servlet-name>
+        <url-pattern>/findscholia</url-pattern>
+    </servlet-mapping>
+
+
+
+    <servlet-mapping>
+        <servlet-name>GroovyServlet</servlet-name>
         <url-pattern>/home</url-pattern>
     </servlet-mapping>
 

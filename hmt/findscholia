@@ -1,0 +1,66 @@
+import edu.holycross.shot.sparqlimg.CiteImage
+
+String sparql = "@sparqls@"
+String fcgi =  "@iipsrv@"
+
+String demoImage = "@demoImage@"
+
+String demoObject = "@demoObject@"
+String demoText = "@demoText@"
+
+CiteImage citeimg = new CiteImage(sparql, fcgi)
+
+String svcReply = citeimg.getSparqlReply("application/json", citeimg.qg.summarizeGroupsQuery())
+def slurper = new groovy.json.JsonSlurper()
+def imgReply = slurper.parseText(svcReply)
+
+
+
+
+html.html {
+    head {
+      title("HMT Digital")
+      link(type : "text/css", rel : "stylesheet", href : "@coreCss@", title : "CSS stylesheet")
+    }
+    
+    body {
+    
+    	header (role : "banner"){
+            mkp.yield ("Digital services from the Homer Multitext project")
+            nav(role : "navigation") {
+	      ul {
+		li {
+		  mkp.yield("HMT: ")
+		  a(href: "http://www.homermultitext.org", "home")
+		}
+		li {
+		  mkp.yield("HMT Digital: ")
+		  a(href: "home", "home")
+		}
+
+		li {
+		  a(href: "mss", "browse MSS")
+		}
+	      }
+	    }
+    	}
+    	
+    	article (role : "main") {
+
+	  h2("Find scholia")
+
+	  p {
+	    mkp.yield ("Look up by full URN reference for")
+	    em("Iliad")
+	    mkp.yield " passage (including MS)"
+	  }
+
+	  form (action : "scholia", method : "get") {
+	    label(for: "txturn1", "Text passage URN")
+	    input (type : "text", name : "urn", value : demoText, size: "60", id : "txturn1")
+	    input (type : "submit", value : "See texts")
+	  }
+        }
+        footer("@htmlfooter@")
+    }
+}
