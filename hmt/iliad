@@ -1,20 +1,12 @@
-/*
-
+/*  Query indexing of Iliad lines to occurrences in MSS.
 */
-import groovyx.net.http.*
-import groovyx.net.http.HttpResponseException
-import static groovyx.net.http.ContentType.*
-import static groovyx.net.http.Method.*
 
-
+import groovy.xml.MarkupBuilder
 import edu.harvard.chs.cite.CtsUrn
 
-
-
-
-boolean error = false
-
-
+response.setContentType("text/html")
+response.setCharacterEncoding('UTF-8')
+response.setHeader( "Access-Control-Allow-Origin", "*")
 
 
 /**
@@ -31,15 +23,8 @@ String getSparqlReply(String acceptType, String query) {
   if (acceptType == "application/json") {
     q +="&output=json"
   }
-
-  def http = new HTTPBuilder(q)
-  http.request( Method.GET, ContentType.TEXT ) { req ->
-    headers.Accept = acceptType
-    response.success = { resp, reader ->
-      replyString = reader.text
-    }
-  }
-  return replyString
+  URL queryUrl = new URL(q)
+  return queryUrl.getText("UTF-8")
 }
 
 
@@ -58,25 +43,91 @@ order by ?ln
 
 
 
+String errorReport(String s, java.lang.Exception ex) {
+  def writer = new StringWriter()
+  def xml = new MarkupBuilder(writer)
 
+  xml.html() {
+    head {
+      title("@projectlabel@: Index to Iliad")
+      link(type : "text/css", rel : "stylesheet", href : "css/browsers.css", title : "CSS stylesheet")
+      link(type : "text/css", rel : "stylesheet", href : "@coreCss@", title : "CSS stylesheet")
+      script(type: "text/javascript", src : "js/jquery.min.js", "  ")
+      script(type: "text/javascript", src : "@citekit@", "  ")
+    } 
+    body {
+      header(role: "banner") {
+	mkp.yield ("Digital services from the Homer Multitext project")
+	nav(role: "navigation") {
+	  ul {
+	    li {
+	      mkp.yield("HMT: ")
+	      a(href: "http://www.homermultitext.org", "home")
+	    }
+	    li {
+	      mkp.yield("HMT Digital: ")
+	      a(href: "home", "home")
+	    }
+	    li {
+	      a(href: "mss", "browse MSS")
+	    }
+	    li {
+	      a(href: "scholia", "scholia")
+	    }
+	  }
+	}
+      }
 
-CtsUrn iliadUrn
-String ref = request.getParameter("ref")
-try {
-  iliadUrn = new CtsUrn("urn:cts:greekLit:tlg0012.tlg001:${ref}")
-} catch (Exception e) {
-  error = true
+      article {
+	if ((s != null) && (s.size() > 0)) {
+	  h2("Error")
+	  p  {
+	    mkp.yield "Not a valid URN parameter: "
+	    strong(s)
+	  }
+	  p("${ex}")
+	}
+
+	h2("Find passage")
+	p {
+	  form (action : "iliad", method : "get") {
+	    label(for: "ref","book.line")
+	    input (type : "text", name : "ref", value : "1.1", size: "10", id : "ref")
+	    input (type : "submit", value : "See occurrences")
+	  }    
+	}
+
+      }
+      footer("@htmlfooter@")
+    }
+  }
+  return writer.toString()
 }
 
-if (error) {
-  response.setContentType("text/plain")
-  println "Please include a parameter named 'urn' with either a valid reference to a line of the Iliad or to a manuscript page."
 
-} else {
-  response.setContentType("text/html")
-  response.setCharacterEncoding('UTF-8')
-  response.setHeader( "Access-Control-Allow-Origin", "*")
 
+
+boolean done = false
+CtsUrn iliadUrn = null
+String ref = request.getParameter("ref")
+
+
+if ((ref == null) || (ref.size() == 0)) {
+  println errorReport(ref, new Exception("No 'ref' parameter supplied."))
+  done = true
+}
+
+
+if (!done) {
+  try {
+    iliadUrn = new CtsUrn("urn:cts:greekLit:tlg0012.tlg001:${ref}")
+  } catch (Exception e) {
+    println errorReport(ref, e)
+    done = true
+  }
+}
+
+if (!done) {
   def slurper = new groovy.json.JsonSlurper()
   String queryString = iliadIndexQuery("${ref}")
   def jsonData =  slurper.parseText(getSparqlReply("application/json", queryString))
@@ -91,10 +142,25 @@ if (error) {
     }
   
     body {
-      header {
-	nav {
-	  mkp.yield "@projectlabel@: "
-	  a(href : '@homeUrl@', "Home")
+      header(role: "banner") {
+	mkp.yield ("Digital services from the Homer Multitext project")
+	nav(role: "navigation") {
+	  ul {
+	    li {
+	      mkp.yield("HMT: ")
+	      a(href: "http://www.homermultitext.org", "home")
+	    }
+	    li {
+	      mkp.yield("HMT Digital: ")
+	      a(href: "home", "home")
+	    }
+	    li {
+	      a(href: "mss", "browse MSS")
+	    }
+	    li {
+	      a(href: "scholia", "scholia")
+	    }
+	  }
 	}
       }
 
@@ -103,19 +169,26 @@ if (error) {
 	em("Iliad")
       }
 
-      p {
-	em("Iliad")
-	mkp.yield " ${ref} occurs in:"
-      }
-      ul {
-	jsonData.results.bindings.each { b ->
-	  
-	  li {
-	    a(href: "facs?urn=${b.folio.value}", "${b.lbl.value}")
+      if (jsonData.results.bindings.size() > 0) {
+	p {
+	  em("Iliad")
+	  mkp.yield " ${ref} occurs in:"
+	}
+	ul {
+	  jsonData.results.bindings.each { b ->
+	    li {
+	      a(href: "facs?urn=${b.folio.value}", "${b.lbl.value}")
 	    }
+	  }
+	}
+      } else {
+	p {
+	  mkp.yield "No occurrences of "
+	  em("Iliad")
+	  mkp.yield " ${ref} indexed to manuscripts."
 	}
       }
-
+      footer("@htmlfooter@")
     }
   }
 }
