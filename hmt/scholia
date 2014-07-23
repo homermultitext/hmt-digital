@@ -14,6 +14,8 @@ response.setHeader( "Access-Control-Allow-Origin", "*")
 
 boolean done = false
 
+
+
 def slurper = new groovy.json.JsonSlurper()
 
 String urnStr = request.getParameter("urn")
@@ -22,6 +24,7 @@ CtsUrn urn
 
 
 String error(String s, java.lang.Exception ex) {
+  String demoText = "urn:cts:greekLit:tlg0012.tlg001.msA:1.1"
   def writer = new StringWriter()
   def xml = new MarkupBuilder(writer)
 
@@ -50,7 +53,7 @@ String error(String s, java.lang.Exception ex) {
 	      a(href: "mss", "browse MSS")
 	    }
 	    li {
-	      a(href: "findscholia", "scholia")
+	      a(href: "scholia", "scholia")
 	    }
 	  }
 	}
@@ -58,12 +61,30 @@ String error(String s, java.lang.Exception ex) {
 
       article {
 
-	h2("Error")
-	p  {
-	  mkp.yield "Not a valid URN parameter: "
-	  strong(s)
+
+	if ((s != null) && (s.size() > 0)) {
+	  h2("Error")
+	  p  {
+	    mkp.yield "Not a valid URN parameter: "
+	    strong(s)
+	  }
+	  p("${ex}")
 	}
-	p("${ex}")
+
+
+	h2("Find scholia")
+
+	p {
+	  mkp.yield ("Look up by full URN reference for")
+	  em("Iliad")
+	  mkp.yield " passage (including MS)"
+	}
+
+	form (action : "scholia", method : "get") {
+	  label(for: "txturn1", "Text passage URN")
+	  input (type : "text", name : "urn", value : demoText, size: "60", id : "txturn1")
+	  input (type : "submit", value : "See texts")
+	}
       }
       footer("@htmlfooter@")
     }
@@ -193,7 +214,7 @@ if (!done){
 	      a(href: "mss", "browse MSS")
 	    }
 	    li {
-	      a(href: "findscholia", "scholia")
+	      a(href: "scholia", "scholia")
 	    }
 	  }
 	}

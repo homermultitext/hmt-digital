@@ -43,7 +43,7 @@ html.html {
 		}
 
 		li {
-		  a(href: "findscholia", "scholia")
+		  a(href: "scholia", "scholia")
 		}
 	      }
 	    }
@@ -67,11 +67,6 @@ html.html {
 	    mkp.yield " line"
 	  }
 	  p {
-	    /*
-	    mkp.yield("Find manuscript pages for ")
-	    em("Iliad")
-	    mkp.yield(" reference (book.line):")
-	    */
 	    form (action : "iliad", method : "get") {
 	      label(for: "ref","book.line")
 	      input (type : "text", name : "ref", value : "1.1", size: "10", id : "ref")

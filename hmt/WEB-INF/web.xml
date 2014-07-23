@@ -17,11 +17,6 @@
         <url-pattern>*.groovy</url-pattern>
     </servlet-mapping>
 
-    <servlet-mapping>
-        <servlet-name>GroovyServlet</servlet-name>
-        <url-pattern>/findscholia</url-pattern>
-    </servlet-mapping>
-
 
 
     <servlet-mapping>
@@ -79,13 +74,7 @@
     </servlet-mapping>
 
 
-
-
-    <servlet-mapping>
-        <servlet-name>GroovyServlet</servlet-name>
-        <url-pattern>/msscholia</url-pattern>
-    </servlet-mapping>
-
+    <!-- HMT additions: -->
     <servlet-mapping>
         <servlet-name>GroovyServlet</servlet-name>
         <url-pattern>/scholia</url-pattern>

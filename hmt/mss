@@ -1,5 +1,6 @@
 /**
-Do this as a groovlet now so we can develop it into a query off the graph that:
+Do this as a groovlet now so we can develop it into a query off the
+graph that:
 
 - collects page models of codices from the urn:cite:hmt:codices collections
 - finds first element in each 
@@ -34,21 +35,15 @@ html.html {
 	  li {
 	    a(href: "mss", "browse MSS")
 	  }
+	  li {
+	    a(href: "scholia", "scholia")
+	  }
 	}
       }
     }
 
     h2("Manuscripts")
     h3("Start from MS page")
-    /*
-    p("Cite a page in one of these manuscripts:")
-    table {
-      tr {
-	th("URN")
-	th("Description")
-      }
-      }*/
-
     form (action : "facs", method : "get") {
       label(for: "pgurn","Page")
       input (type : "text", name : "urn", value : "@demoObject@", size: "60", id : "pgurn")

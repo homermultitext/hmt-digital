@@ -191,6 +191,9 @@ if (!foundUrn) {
 	      a(href: "mss", "browse MSS")
 	    }
 	    li {
+	      a(href: "scholia", "scholia")
+	    }
+	    li {
 	      mkp.yield "browse MS: "
 
 	      if (prevPg != "") {
