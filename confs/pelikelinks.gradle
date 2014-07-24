@@ -21,5 +21,5 @@ project.ext {
     ict = "http://pelike.hpcc.uh.edu/tomcat/hmt-digital/ict.html"
 
     // CiteKit javascript package
-    citekit = "http://pelike.hpcc.uh.edu/tomcat/tomcat/hmt-digital/citekit/js/cite-jq.js"
+    citekit = "http://pelike.hpcc.uh.edu/tomcat/hmt-digital/citekit/js/cite-jq.js"
 }
