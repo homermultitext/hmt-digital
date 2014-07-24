@@ -1,4 +1,4 @@
-/* Configuration for running citeservlet base on pelike.hpcc.uh.edu
+/* Configuration for running citeservlet base on amphoreus.hpcc.uh.edu
 */
 
 
@@ -11,7 +11,7 @@ project.ext {
     sparqls  = "http://localhost:3030/ds/"
 
     // 2. Absolute or relative URL of IIPSrv fast cgi (used by image service)
-    iipsrv = "http://pelike.hpcc.uh.edu/iipsrv"
+    iipsrv = "http://amphoreus.hpcc.uh.edu/iipsrv"
 	
     inventoryDir = "localconf/inventories"
 
@@ -20,7 +20,7 @@ project.ext {
     /* Project-specific values                    */
     /* *****************************************  */		    
     // Where you will install or run citeservlet
-    homeUrl = "http://pelike.hpcc.uh.edu/tomcat/hmt-digital/"
+    homeUrl = "http://amphoreus.hpcc.uh.edu/tomcat/hmt-digital/"
 
     // Strings for labelling web pages
     projectlabel = "HMT Digital"

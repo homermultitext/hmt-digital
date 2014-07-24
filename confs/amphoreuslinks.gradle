@@ -1,0 +1,25 @@
+/* URLs for CITE services, Image Citation Tool, and CITEKit *
+installed on amphoreus.hpcc.uh.edu */
+
+
+project.ext {
+
+    // Where you want to provide query forms for the services
+    queryforms = "http://amphoreus.hpcc.uh.edu/tomcat/hmt-digital/svcforms"
+
+    // The four CITE services	    
+    texts  = "http://amphoreus.hpcc.uh.edu/tomcat/hmt-digital/texts"
+    indices =  "http://amphoreus.hpcc.uh.edu/tomcat/hmt-digital/indices"
+    collections = "http://amphoreus.hpcc.uh.edu/tomcat/hmt-digital/collections"
+    images = "http://amphoreus.hpcc.uh.edu/tomcat/hmt-digital/images"
+
+
+    // XSLT to use for constructing IIPMooViewer replies
+    mooxslt = "xslt/citeimg_getiipmooviewer.xsl"
+
+    // The image citation tool
+    ict = "http://amphoreus.hpcc.uh.edu/tomcat/hmt-digital/ict.html"
+
+    // CiteKit javascript package
+    citekit = "http://amphoreus.hpcc.uh.edu/tomcat/hmt-digital/citekit/js/cite-jq.js"
+}
