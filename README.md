@@ -1,7 +1,11 @@
-# hmtdigital: digital services of the Homer Multitext project
+# hmt-digital, 1.0  series: digital services of the Homer Multitext project
 
 This git repository is for customizations of the generic `citeservlet` to 
 provide digital services for the Homer Multitext project.   
+
+## Versions ##
+
+Current version: 1.0.
 
 
 ## Prerequisites ##
