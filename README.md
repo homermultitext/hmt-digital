@@ -5,10 +5,15 @@ provide digital services for the Homer Multitext project.
 
 ## Versions ##
 
-Current version: 1.0.
+The master branch always has the most recent published version (currently, version 1.0).  
+
+The most recent published version is always installed at <http://www.homermultitext.org/hmt-digital>.
 
 
-## Prerequisites ##
+## Installation and usage##
+
+
+### Prerequisites ###
 
 - gradle: <http://www.gradle.org/>
 - a SPARQL endpoint serving HMT project data (your own, or a publicly visible one such as <http://beta.hpcc.uh.edu:3030/>)
