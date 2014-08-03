@@ -28,7 +28,7 @@ any machine that can run a servlet container, a SPARQL endpoint, and the gradle 
 ### Prerequisites ###
 
 - gradle: <http://www.gradle.org/>
-- a SPARQL endpoint serving HMT project data (your own, or a publicly visible one such as <http://beta.hpcc.uh.edu:3030/>)
+- a version 1.1 SPARQL endpoint serving HMT project data (your own, or a publicly visible one such as <http://beta.hpcc.uh.edu:3030/>)
 - a clone of `citeservet`: <https://github.com/cite-architecture/citeservlet>
 
 
