@@ -1,4 +1,4 @@
-# hmt-digital 1.0.0: digital services of the Homer Multitext project
+# hmt-digital 1.1.0: digital services of the Homer Multitext project
 
 This git repository is for customizations of the generic `citeservlet` to 
 provide digital services for the Homer Multitext project.   
