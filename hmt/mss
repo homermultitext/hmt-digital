@@ -7,6 +7,58 @@ graph that:
 */
 
 
+String getSparqlReply(String acceptType, String query) {
+  String replyString
+  def encodedQuery = URLEncoder.encode(query)
+  def q = "@sparqls@query?query=${encodedQuery}"
+  if (acceptType == "application/json") {
+    q +="&output=json"
+  }
+
+  URL queryUrl = new URL(q)
+  return queryUrl.getText("UTF-8")
+
+}
+
+
+String queryString = """
+SELECT ?century ?codex ?label ?folio  WHERE {
+   ?codex <http://www.homermultitext.org/hmt/citedata/codices_pageModel>  ?pgmodel .
+   ?codex <http://www.homermultitext.org/hmt/citedata/codices_century>  ?century  . 
+   ?codex <http://www.w3.org/1999/02/22-rdf-syntax-ns#label> ?label .
+   ?pgmodel <http://www.homermultitext.org/cite/rdf/possesses>  ?folio .
+   ?folio  <http://purl.org/ontology/olo/core#item>  ?seq .
+
+}
+ORDER BY ?century ?codex ?seq
+"""
+
+
+def slurper = new groovy.json.JsonSlurper()
+def jsonData =  slurper.parseText(getSparqlReply("application/json", queryString))
+
+def pageMap = [:]
+def labelMap = [:]
+def centuryMap = [:]
+String prevCodex = ""
+jsonData.results.bindings.each { b ->
+  String currCodex = b.codex.value
+
+  if (currCodex != prevCodex) {
+    pageMap[currCodex] = [b.folio.value]
+    labelMap[currCodex] = b.label.value
+    centuryMap[currCodex] = b.century.value
+    prevCodex = currCodex
+
+  } else {
+    def pages = pageMap[currCodex]
+    pages.add(b.folio.value)
+    pageMap[currCodex] = pages
+  }
+
+}
+
+
 html.html {
   head {
     title("@projectlabel@: manuscripts")
@@ -21,7 +73,6 @@ html.html {
     header(role: "banner") {
       mkp.yield ("Digital services from the Homer Multitext project")
       nav(role: "navigation") {
-	
 	ul {
 	  li {
 	    mkp.yield("HMT: ")
@@ -42,12 +93,32 @@ html.html {
       }
     }
 
-    h2("Manuscripts")
+
+
+
+
+    h2("Browse manuscripts")
+
     h3("Start from MS page")
-    form (action : "facs", method : "get") {
-      label(for: "pgurn","Page")
-      input (type : "text", name : "urn", value : "@demoObject@", size: "60", id : "pgurn")
-      input (type : "submit", value : "See facsimile")
+
+    String prevCentury = ""
+    pageMap.keySet().each { k ->
+      if (centuryMap[k] != prevCentury) {
+	h4 {
+	  strong("${centuryMap[k]}th c.")
+	}
+	prevCentury = centuryMap[k]
+      }
+      form(action: "facs") {
+	label(for: "urn", "${labelMap[k]}")
+	select(name: "urn", id: "urn") {
+	  def pageList = pageMap[k]
+	  pageList.each { pg ->
+	    option (value: pg, "${pg.replaceFirst(/.+\./,'')}")
+	  }
+	}
+	input (type : "submit", value : "See facsimile")
+      }
     }
   }
 
@@ -60,13 +131,20 @@ html.html {
   p {
     mkp.yield("Find manuscript pages for ")
     em("Iliad")
-    mkp.yield(" reference (book.line):")
+    mkp.yield(" reference.")
 
     form (action : "iliad", method : "get") {
       label(for: "ref","book.line")
       input (type : "text", name : "ref", value : "1.1", size: "10", id : "ref")
       input (type : "submit", value : "See occurrences")
     }    
+
+    p {
+      mkp.yield "(Note:  "
+      em("Iliad")
+      mkp.yield " text is completely indexed for Venetus A, Venetus B and Marciana 841."
+      mkp.yield " Indexing is in progress for Escorial Υ 1.1.)"
+    }
 
     footer("@htmlfooter@")
   }
