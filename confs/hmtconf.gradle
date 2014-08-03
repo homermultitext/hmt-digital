@@ -28,7 +28,7 @@ project.ext {
     // Text to inject into header, footer and nav elements
     htmlnav = "HMT digital: <a href='home'>Home</a>"
     htmlheader = ""
-    htmlfooter = "Software version:  hmt-digital 1.0.  Data set in this service:  2014.1 publication of the Homer Multitext project archive. citeservlet is free software developed by Christopher Blackwell and Neel Smith"
+    htmlfooter = "Software version:  hmt-digital 1.0.1.  Data set in this service:  2014.1 publication of the Homer Multitext project archive. citeservlet is free software developed by Christopher Blackwell and Neel Smith"
 
 
     // Default URNs to populate query forms 
