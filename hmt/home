@@ -51,8 +51,10 @@ html.html {
     	
     	article (role : "main") {
 
-	  h2("Browse manuscripts")
+	  h2("Manuscripts and texts")
 
+
+	  /*
 	  h3("Start from MS page")
 
 	  form (action : "facs", method : "get") {
@@ -74,33 +76,30 @@ html.html {
 	    }    
 	  }
 
+	  */
 
 
 
-	/*
 	ul { 
 	  li {
-	    mkp.yield "Read in-progress"
-	    a(href: "mss", "facsimile editions")
-	    mkp.yield (" (images with edition of ")
+	    a(href: "mss", "Facsimile browser")
+	    mkp.yield (" (MS images with in-progress edition of ")
 	    em("Iliad")
-	    mkp.yield (" and scholia)")
+	    mkp.yield(")")
 	  }
-	*/
 
-	h2("Read scholia")
-	  p {
-	    mkp.yield ("Look up by full URN reference for")
+	  li {
+	    a(href: "scholia", "Read scholia")
+	    mkp.yield(" for ")
 	    em("Iliad")
-	    mkp.yield " passage (including MS)"
+	    mkp.yield(" line")
+	    form (action : "mssForScholia", method : "get") {
+	      label(for: "txturn1", "book.line")
+	      input (type : "text", name : "urn", value : demoText, size: "60", id : "txturn1")
+	      input (type : "submit", value : "See texts")
+	    }
 	  }
-
-	  form (action : "scholia", method : "get") {
-	    label(for: "txturn1", "Text passage URN")
-	    input (type : "text", name : "urn", value : demoText, size: "60", id : "txturn1")
-	    input (type : "submit", value : "See texts")
-	  }
-
+	}
 	/*
 	  li {
 	    mkp.yield "Browse "

@@ -1,3 +1,7 @@
+
+/* allow either psg param or full urn?
+ */
+
 import groovy.xml.MarkupBuilder
 import edu.harvard.chs.cite.CtsUrn
 
@@ -6,25 +10,15 @@ response.setContentType(contentType)
 response.setCharacterEncoding('UTF-8')
 response.setHeader( "Access-Control-Allow-Origin", "*")
 
-boolean done = false
 
-
-
-def slurper = new groovy.json.JsonSlurper()
-
-String urnStr = request.getParameter("urn")
-
-CtsUrn urn
-
-
-String error(String s, java.lang.Exception ex) {
-  String demoText = "urn:cts:greekLit:tlg0012.tlg001.msA:1.1"
+String queryForms() {
   def writer = new StringWriter()
   def xml = new MarkupBuilder(writer)
 
+  
   xml.html() {
     head {
-      title("@projectlabel@: Scholia Reader")
+      title("@projectlabel@: Find scholia")
       link(type : "text/css", rel : "stylesheet", href : "css/browsers.css", title : "CSS stylesheet")
       link(type : "text/css", rel : "stylesheet", href : "@coreCss@", title : "CSS stylesheet")
       script(type: "text/javascript", src : "js/jquery.min.js", "  ")
@@ -55,29 +49,12 @@ String error(String s, java.lang.Exception ex) {
 
       article {
 
-
-	if ((s != null) && (s.size() > 0)) {
-	  h2("Error")
-	  p  {
-	    mkp.yield "Not a valid URN parameter: "
-	    strong(s)
-	  }
-	  p("${ex}")
-	}
-
-
 	h2("Find scholia")
-
-	p {
-	  mkp.yield ("Look up by full URN reference for")
-	  em("Iliad")
-	  mkp.yield " passage (including MS)"
-	}
-
-	form (action : "scholia", method : "get") {
-	  label(for: "txturn1", "Text passage URN")
-	  input (type : "text", name : "urn", value : demoText, size: "60", id : "txturn1")
-	  input (type : "submit", value : "See texts")
+	
+	form (action : "mssForScholia", method : "get") {
+	  label(for: "txturn1", "book.line")
+	  input (type : "text", name : "psg", value : "1.1", size: "5", id : "txturn1")
+	  input (type : "submit", value : "Find scholia")
 	}
       }
       footer("@htmlfooter@")
@@ -86,18 +63,6 @@ String error(String s, java.lang.Exception ex) {
   return writer.toString()
 }
 
-// guarantee that URN parameter is syntactically valid
-try {
-  urn = new CtsUrn(urnStr)
-} catch (Exception e) {
-  println error(urnStr,e)
-  done = true
-}
-
-
-
-String sparql = "@sparqls@"
-String prefix = "prefix cts: <http://www.homermultitext.org/cts/rdf/>\nprefix cite: <http://www.homermultitext.org/cite/rdf/>\nprefix hmt: <http://www.homermultitext.org/hmt/rdf/>\nprefix citedata: <http://www.homermultitext.org/hmt/citedata/>\nprefix dcterms: <http://purl.org/dc/terms/>\nprefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nprefix  xsd: <http://www.w3.org/2001/XMLSchema#>\nprefix olo: <http://purl.org/ontology/olo/core#>"
 
 /**
  * Submits an encoded query to the configured SPARQL endpoint,
@@ -115,7 +80,7 @@ String getSparqlReply(String acceptType, String query) {
   }
   URL queryUrl = new URL(q)
   return queryUrl.getText("UTF-8")
-}
+  }
 
 /** Formulates SPARQL query to retrieve an image-URN illustrating a CTS-URN
 
@@ -135,6 +100,7 @@ select distinct ?picture where {
   return reply
 }
 
+
 /** Formulates SPARQL query to retrieve Scholia and their illustrating Img-ROIs
  * given a textual URN.
  * @param urn URN of the CTS-urn to be illustrated.
@@ -149,7 +115,6 @@ ${prefix}
 select ?edCites ?edPic ?scholia ?scholPic where {
 
 <${textUrn}> cts:belongsTo ?work .
-?edCites cts:belongsTo ?ms .
 ?scholia hmt:commentsOn ?edCites .
 
 optional {
@@ -167,7 +132,42 @@ ORDER BY ?edCites
                 return reply
 }
 
-if (!done){
+boolean urnFound = false
+def slurper = new groovy.json.JsonSlurper()
+
+CtsUrn urn
+String urnStr
+
+
+// guarantee that URN parameter is syntactically valid
+try {
+  urnStr = request.getParameter("urn")
+  urn = new CtsUrn(urnStr)
+  urnFound = true
+} catch (Exception e) {
+}
+
+/*
+if (!urnFound) {
+  try {
+    String psg = request.getParameter("psg")
+    
+    // ... ?? 
+  } catch (Exception e) {
+  }
+  }*/
+
+
+
+
+if (!urnFound){
+  println queryForms()
+
+
+} else {
+  String sparql = "@sparqls@"
+  String prefix = "prefix cts: <http://www.homermultitext.org/cts/rdf/>\nprefix cite: <http://www.homermultitext.org/cite/rdf/>\nprefix hmt: <http://www.homermultitext.org/hmt/rdf/>\nprefix citedata: <http://www.homermultitext.org/hmt/citedata/>\nprefix dcterms: <http://purl.org/dc/terms/>\nprefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nprefix  xsd: <http://www.w3.org/2001/XMLSchema#>\nprefix olo: <http://purl.org/ontology/olo/core#>"
+
   String myPassage = urn.getRef()
   String queryString;
   queryString = illustrationQuery(urnStr, prefix);
@@ -250,6 +250,5 @@ if (!done){
     }
   }
 }
-
 
 
