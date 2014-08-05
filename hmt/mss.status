@@ -16,29 +16,24 @@ String getSparqlReply(String acceptType, String query) {
 
 }
 
-
-
-/* Labelled counts of CITE Image Collections */
-String imageCounts = """
-${prefix}
-select ?coll ?label (count(?obj) AS ?num) where {
-    ?coll rdf:type cite:ImageArchive  .
-    ?coll rdf:label ?label .
-    ?obj cite:belongsTo ?coll .
-   
+String iliadLineCountQuery = """
+select ?ms ?label (count(?ln) AS ?num)  WHERE {
+?ln <http://www.homermultitext.org/cite/rdf/appearsOn> ?folio . 
+?folio <http://www.homermultitext.org/cite/rdf/belongsTo> ?ms .
+?ms <http://www.w3.org/1999/02/22-rdf-syntax-ns#label> ?label .
+FILTER (regex(str(?ln),"urn:cts:greekLit:tlg0012.tlg001.*" ) ) .
 }
-GROUP BY ?coll ?label
-ORDER BY desc(count(?obj))
+GROUP BY ?ms ?label
 """
 
-
-/*Edited texts */
-String editions = """
-${prefix}
-select ?label ?ed where {
-    ?ed rdf:type cts:Edition  .
-    ?ed rdf:label ?label .
+String iliadFolioCountQuery = """
+select ?ms ?label (count(DISTINCT ?folio) AS ?num)  WHERE {
+?ln <http://www.homermultitext.org/cite/rdf/appearsOn> ?folio . 
+?folio <http://www.homermultitext.org/cite/rdf/belongsTo> ?ms .
+?ms <http://www.w3.org/1999/02/22-rdf-syntax-ns#label> ?label .
+FILTER (regex(str(?ln),"urn:cts:greekLit:tlg0012.tlg001.*" ) ) .
 }
+GROUP BY ?ms ?label
 """
 
 
@@ -56,14 +51,9 @@ GROUP BY  ?century ?pgmodel ?label
 ORDER BY ?century ?pgmodel
 """
 
-
-
-
-
-
 html.html {
   head {
-    title("@projectlabel@: status of work")
+    title("@projectlabel@: status of manuscript documentation")
     link(type : "text/css", rel : "stylesheet", href : "css/browsers.css", title : "CSS stylesheet")
     link(type : "text/css", rel : "stylesheet", href : "@coreCss@", title : "CSS stylesheet")
     script(type: "text/javascript", src : "js/jquery.min.js", "  ")
@@ -96,25 +86,82 @@ html.html {
     }
     article {
 
-      h2 ("Summary of status: editing texts")
-      p("by book of Iliad, by lines of ILiad, # scholia, words of Greek")
-
-
-
       h2 ("Summary of status: documenting manuscripts")
       
-      h3("Completely edited")
-
       h3 {
+	mkp.yield("Pages of facsimile indexed to")
 	em("Iliad")
-	mkp.yield (" text indexed to browsable model")
+	mkp.yield (" text")
+      }
+      p {
+	mkp.yield "(Lookup page by " 
+	em("Iliad")
+	mkp.yield (" line ")
+	a (href: "mss", "here")
+	mkp.yield ".)"
       }
 
 
+      def pagesMap = [:]
+      def folioSlurper = new groovy.json.JsonSlurper()
+      def indexedPages = folioSlurper.parseText(getSparqlReply("application/json", iliadLineCountQuery))
+      indexedPages.results.bindings.each { b ->
+	pagesMap[b.ms.value] = b.num.value
+	/*
+	p { 
+	  mkp.yield("${b.label?.value}:  ")
+	  strong("${b.num?.value} lines")
+	  mkp.yield(" indexed.")
+	
+	  }*/
+      }
 
-      h3("Browsable model of codex")
+
+      def lnSlurper = new groovy.json.JsonSlurper()
+      def indexedLines = lnSlurper.parseText(getSparqlReply("application/json", iliadFolioCountQuery))
+      table {
+	tr {
+	  th("Manuscript")
+	  th {
+	    em("Iliad")
+	    mkp.yield " lines"
+	  }
+	  th("Pages")
+	}
+	indexedLines.results.bindings.each { b ->
+	tr {
+	  td(b.label.value)
+	  td(pagesMap[b.ms.value])
+	  td(b.num.value)
+
+	}
+
+      }
+
+
+      }
+	/*
+
+	p { 
+	  mkp.yield("${b.label?.value}:  ")
+	  strong("${b.num?.value} lines")
+	  mkp.yield(" indexed.")
+	  linesMap[b.ms.value] = b.num.value
+	}
+	}*/
+
+
+      h3("Pages browsable in facsimile")
       def msSlurper = new groovy.json.JsonSlurper()
       def browsables = msSlurper.parseText(getSparqlReply("application/json", browsableQuery))
+
+
+      p {
+	mkp.yield "(Browse facsimiles " 
+	a (href: "mss", "here")
+	mkp.yield ".)"
+      }
+
       String prevCentury = ""
       browsables.results.bindings.each { b ->
 	if (b.century?.value != prevCentury) {
@@ -123,41 +170,11 @@ html.html {
 	    strong("${b.century?.value}th century")
 	  }
 	}
+
 	p { 
-	  mkp.yield("${b.label?.value}:  ${b.cnt?.value} pages")
-	  form(action: "facs") {
-	    input(type: "hidden", name: "ms", value: "${b.pgmodel.value}")
-	    input(size: 5, name: "folio", value: "1r")
-	    input (type : "submit", value : "browse")
-	  }
-	}
-      }
-
-      
-
-      h3("Images cataloged")
-      def slurper = new groovy.json.JsonSlurper()
-      def parsedImgs = slurper.parseText(getSparqlReply("application/json", imageCounts))
-      boolean hasImages = false
-
-      if ( parsedImgs.results.bindings.size() == 1) {
-	parsedImgs.results.bindings.each { b ->
-	  if (b.num.value == "0") {
-	    mkp.yield("none.")
-	  } else {
-	    hasImages = true
-	  }
-	}
-      } else {
-	hasImages = true
-      }
-      if (hasImages) {
-	parsedImgs.results.bindings.each { b ->
-	  p {
-	      mkp.yield "${b.label?.value}: ${b.num?.value} images ("
-	      a(href : "browseimg?urn=${b.coll?.value}", "see images")
-	      mkp.yield(")")
-	  }
+	  mkp.yield("${b.label?.value}:  ")
+	  strong("${b.cnt?.value} pages")
+	  mkp.yield(".")
 	}
       }
     }

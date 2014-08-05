@@ -55,7 +55,11 @@ String queryForms() {
       article {
 
 	h2("Find scholia")
-	
+	p {
+	  mkp.yield "Find scholia commenting on a line in the "
+	  em("Iliad")
+	  mkp.yield(".")
+	}
 	form (action : "mssForScholia", method : "get") {
 	  label(for: "txturn1", "book.line")
 	  input (type : "text", name : "psg", value : "1.1", size: "5", id : "txturn1")

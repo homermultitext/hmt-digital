@@ -48,7 +48,6 @@ html.html {
 
 
       h2("Status of the data archive")
-      p("See a summary of progress:")
 
       ul {
 	li {

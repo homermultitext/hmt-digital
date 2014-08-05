@@ -122,7 +122,7 @@ html.html {
       p {
 	mkp.yield("Lines of the ")
 	em("Iliad")
-	mkp.yield (" by manuscript.")
+	mkp.yield (" by manuscript:")
       }
       def ilSlurper = new groovy.json.JsonSlurper()
       def ilLines = ilSlurper.parseText(getSparqlReply("application/json", iliadLinesQuery))
@@ -136,7 +136,7 @@ html.html {
 
       h3("Scholia")
 
-      p ("Number of scholia by document.")
+      p ("Number of scholia fully edited and indexed, by document:")
       def scholSlurper = new groovy.json.JsonSlurper()
       def scholia = ilSlurper.parseText(getSparqlReply("application/json", scholiaByDocQuery))
 
@@ -175,7 +175,8 @@ html.html {
       }
 
 
-      h3("Validation level (by page)")
+      h3("Validation level")
+      p("Number of pages validated by manuscript:")
       def pgSlurper = new groovy.json.JsonSlurper()
       def pgStatusSummary = pgSlurper.parseText(getSparqlReply("application/json", pageStatusQuery))
       
