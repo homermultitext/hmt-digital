@@ -75,7 +75,9 @@ html.html {
       parsedImgs.results.bindings.each { b ->
 	if (b.num?.value == "1") {
 	  p {
-	    mkp.yield "${b.label?.value}: 1 image ("
+	    mkp.yield "${b.label?.value}: "
+	    strong("1 image ")
+	    mkp.yield " ("
 	    a(href : "browseimg?urn=${b.coll?.value}", "see image")
 	    mkp.yield(")")
 	  }
@@ -83,7 +85,9 @@ html.html {
 	} else {
 
 	  p {
-	    mkp.yield "${b.label?.value}: ${b.num?.value} images ("
+	    mkp.yield "${b.label?.value}: "
+	    strong("${b.num?.value} images")
+	    mkp.yield " ("
 	    a(href : "browseimg?urn=${b.coll?.value}", "browse")
 	    mkp.yield(")")
 	  }
