@@ -1,7 +1,9 @@
 
-/* allow either psg param or full urn?
+/* Given a URN for an Iliad line in a specific MS,
+ * find scholia in that MS on that line, and display both
+ * Iliad text and scholia in aligned edition and image,
+ * using citekit-compare divs.
  */
-
 import groovy.xml.MarkupBuilder
 import edu.harvard.chs.cite.CtsUrn
 
@@ -10,7 +12,10 @@ response.setContentType(contentType)
 response.setCharacterEncoding('UTF-8')
 response.setHeader( "Access-Control-Allow-Origin", "*")
 
-
+/** Gets the HTML, as a String, of a page with queryable forms.  Use this
+ * as reply text if there is no requested Iliad line to
+ * search for.
+ */
 String queryForms() {
   def writer = new StringWriter()
   def xml = new MarkupBuilder(writer)
@@ -107,6 +112,25 @@ select distinct ?picture where {
  * @param prefix SPARQL prefix statements to prepend to the query.
  * @returns A valid SPARQL query.
  */
+
+String scholiaQuery(CtsUrn textUrn) {
+String reply = """
+  prefix cite: <http://www.homermultitext.org/cite/rdf/>
+  prefix hmt: <http://www.homermultitext.org/hmt/rdf/>
+
+  select ?ms ?mslabel ?iliadPic ?scholion ?scholPic where {
+    ?scholion hmt:commentsOn <${textUrn}> .
+    <${textUrn}>  <http://www.homermultitext.org/cts/rdf/belongsTo> ?ms .
+    ?ms  <http://www.w3.org/1999/02/22-rdf-syntax-ns#label>   ?mslabel .
+    ?scholion cite:illustratedBy ?scholPic .
+    optional {
+      <${textUrn}> cite:illustratedBy ?iliadPic .
+    }
+  }
+"""
+}
+
+/*
 String scholiaQuery(String textUrn, String prefix, String myPassage) {
 
         String reply = """
@@ -131,6 +155,7 @@ ORDER BY ?edCites
 """
                 return reply
 }
+*/
 
 boolean urnFound = false
 def slurper = new groovy.json.JsonSlurper()
@@ -169,11 +194,17 @@ if (!urnFound){
   String prefix = "prefix cts: <http://www.homermultitext.org/cts/rdf/>\nprefix cite: <http://www.homermultitext.org/cite/rdf/>\nprefix hmt: <http://www.homermultitext.org/hmt/rdf/>\nprefix citedata: <http://www.homermultitext.org/hmt/citedata/>\nprefix dcterms: <http://purl.org/dc/terms/>\nprefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nprefix  xsd: <http://www.w3.org/2001/XMLSchema#>\nprefix olo: <http://purl.org/ontology/olo/core#>"
 
   String myPassage = urn.getRef()
-  String queryString;
-  queryString = illustrationQuery(urnStr, prefix);
-  textIllustrations = slurper.parseText(getSparqlReply("application/json", queryString))
-  scholiaFound = slurper.parseText(getSparqlReply("application/json",scholiaQuery(urnStr, prefix, myPassage)));
-  
+  String queryString = scholiaQuery(urn);
+
+  //queryString = illustrationQuery(urnStr, prefix);
+  // textIllustrations = slurper.parseText(getSparqlReply("application/json", queryString))
+  //scholiaFound = slurper.parseText(getSparqlReply("application/json",scholiaQuery(urnStr, prefix, myPassage)));
+
+  System.err.println queryString
+  scholiaFound = slurper.parseText(getSparqlReply("application/json",queryString))
+
+
+
   html.html {
     head {
       title("@projectlabel@: Scholia Reader")
@@ -212,6 +243,26 @@ if (!urnFound){
 	h3("${scholiaFound.results.bindings.size()} Scholia for ${myPassage}")
 
 	String currentMs = ""
+	scholiaFound.results.bindings.each { b ->
+	  if (b.ms.value != currentMs){
+	    currentMs = b.ms.value
+	    h3("Manuscript ${b.mslabel.value}")
+	    blockquote(class: "cite-text", cite : "${urn}", "${urn}")
+	    if (b.iliadPic?.value) {
+	      blockquote(class: "cite-image", cite : "${b.iliadPic.value}", "${b.iliadPic.value}")
+	    }
+	    h3("Scholia")
+	  }
+
+
+	  div (class : "citekit-compare") {
+	    blockquote(class: "cite-text", cite : "${b.scholion.value}", "${b.scholion.value}")
+	    if (b.scholPic?.value){
+	      blockquote(class: "cite-image", cite : "${b.scholPic?.value}", "${b.scholPic?.value}")
+	    }
+	  }
+	}
+	/*
 
 	scholiaFound.results.bindings.each { b ->
 	  if (b.edCites.value != currentMs){
@@ -238,6 +289,7 @@ if (!urnFound){
 	    }
 	  }
 	}    
+	*/
 
 	// citekit magic:
 	ul (id: "citekit-sources") {

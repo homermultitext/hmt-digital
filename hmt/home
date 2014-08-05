@@ -93,11 +93,12 @@ html.html {
 	    mkp.yield(" for ")
 	    em("Iliad")
 	    mkp.yield(" line")
+	    /*
 	    form (action : "mssForScholia", method : "get") {
 	      label(for: "txturn1", "book.line")
 	      input (type : "text", name : "urn", value : demoText, size: "60", id : "txturn1")
 	      input (type : "submit", value : "See texts")
-	    }
+	      }*/
 	  }
 	}
 	/*
@@ -117,7 +118,7 @@ html.html {
 	  }
 	*/
 	  
-	  h2("Other utilities")
+	  h2("Other")
 
 	    ul {
                 li {
