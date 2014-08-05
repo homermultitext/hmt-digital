@@ -1,0 +1,100 @@
+
+
+
+String getSparqlReply(String acceptType, String query) {
+  String replyString
+  def encodedQuery = URLEncoder.encode(query)
+  def q = "@sparqls@query?query=${encodedQuery}"
+  if (acceptType == "application/json") {
+    q +="&output=json"
+  }
+
+  URL queryUrl = new URL(q)
+  return queryUrl.getText("UTF-8")
+
+}
+
+
+String getQueryString(String ln) {
+  return  """
+SELECT ?mslabel ?ms ?psg (count(?schol) AS ?count) WHERE {
+
+  ?ms <http://www.homermultitext.org/cts/rdf/belongsTo> <urn:cts:greekLit:tlg0012.tlg001> .
+  ?ms <http://www.w3.org/1999/02/22-rdf-syntax-ns#label>  ?mslabel .
+  ?psg <http://www.homermultitext.org/cts/rdf/belongsTo>   ?ms . 
+  BIND (CONCAT(str(?ms),":${ln}")  AS ?linestr )  .
+  ?schol  <http://www.homermultitext.org/hmt/rdf/commentsOn> ?psg .
+
+  filter (str(?psg) = ?linestr )
+}
+group by ?ms ?mslabel ?psg
+"""
+}
+
+
+
+
+String psg = request.getParameter("psg")
+
+def slurper = new groovy.json.JsonSlurper()
+def jsonData =  slurper.parseText(getSparqlReply("application/json", getQueryString(psg)))
+
+
+
+html.html {
+  head {
+    title("@projectlabel@: scholia for Iliad ${psg}")
+    link(type : "text/css", rel : "stylesheet", href : "css/browsers.css", title : "CSS stylesheet")
+    link(type : "text/css", rel : "stylesheet", href : "@coreCss@", title : "CSS stylesheet")
+    script(type: "text/javascript", src : "js/jquery.min.js", "  ")
+    script(type: "text/javascript", src : "@citekit@", "  ")
+  }
+  
+  body {
+
+    header(role: "banner") {
+      mkp.yield ("Digital services from the Homer Multitext project")
+      nav(role: "navigation") {
+	ul {
+	  li {
+	    mkp.yield("HMT: ")
+	    a(href: "http://www.homermultitext.org", "home")
+	  }
+	  li {
+	    mkp.yield("HMT Digital: ")
+	    a(href: "home", "home")
+	  }
+
+	  li {
+	    a(href: "mss", "browse MSS")
+	  }
+	  li {
+	    a(href: "scholia", "scholia")
+	  }
+	}
+      }
+    }
+    article {
+
+      h2 {
+	mkp.yield("Manuscripts with scholia for ")
+	em("Iliad")
+	mkpyield (" ${psg}")
+      }
+      ul {
+	jsonData.results.bindings.each { b ->
+	  li {
+	    String mslabel = b.mslabel.value
+	    String ms = b.ms.value
+	    mkp.yield("${mslabel}: ")
+	    a (href: "scholia?urn=${ms}:${psg}", "${b.count.value} scholia")
+	  }
+	}
+      }
+    }
+    footer("@htmlfooter@")
+  }
+}
+
+
+
