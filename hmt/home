@@ -1,137 +1,71 @@
-import edu.holycross.shot.sparqlimg.CiteImage
-
-String sparql = "@sparqls@"
-String fcgi =  "@iipsrv@"
-
-String demoImage = "@demoImage@"
-
-String demoObject = "@demoObject@"
-String demoText = "@demoText@"
-
-CiteImage citeimg = new CiteImage(sparql, fcgi)
-
-String svcReply = citeimg.getSparqlReply("application/json", citeimg.qg.summarizeGroupsQuery())
-def slurper = new groovy.json.JsonSlurper()
-def imgReply = slurper.parseText(svcReply)
-
-
-
 
 html.html {
-    head {
-      title("HMT Digital")
-      link(type : "text/css", rel : "stylesheet", href : "@coreCss@", title : "CSS stylesheet")
-    }
+  head {
+    title("HMT Digital")
+    link(type : "text/css", rel : "stylesheet", href : "@coreCss@", title : "CSS stylesheet")
+  }
     
-    body {
-    
-    	header (role : "banner"){
-            mkp.yield ("Digital services from the Homer Multitext project")
-            nav(role : "navigation") {
-	      ul {
-		li {
-		  mkp.yield("HMT: ")
-		  a(href: "http://www.homermultitext.org", "home")
-		}
-		li {
-		  mkp.yield("HMT Digital: ")
-		  a(href: "home", "home")
-		}
-
-		li {
-		  a(href: "mss", "browse MSS")
-		}
-
-		li {
-		  a(href: "scholia", "scholia")
-		}
-	      }
-	    }
-    	}
-    	
-    	article (role : "main") {
-
-	  h2("Manuscripts and texts")
-
-
-	  /*
-	  h3("Start from MS page")
-
-	  form (action : "facs", method : "get") {
-	    label(for: "pgurn","Page URN")
-	    input (type : "text", name : "urn", value : "@demoObject@", size: "60", id : "pgurn")
-	    input (type : "submit", value : "See facsimile")
-	  }
-	  
-	  h3 {
-	    mkp.yield "Start from "
-	    em("Iliad")
-	    mkp.yield " line"
-	  }
-	  p {
-	    form (action : "iliad", method : "get") {
-	      label(for: "ref","book.line")
-	      input (type : "text", name : "ref", value : "1.1", size: "10", id : "ref")
-	      input (type : "submit", value : "See occurrences")
-	    }    
-	  }
-
-	  */
-
-
-
-	ul { 
+  body {
+    header (role : "banner"){
+      mkp.yield ("Digital services from the Homer Multitext project")
+      nav(role : "navigation") {
+	ul {
 	  li {
-	    a(href: "mss", "Facsimile browser")
-	    mkp.yield (" (MS images with in-progress edition of ")
-	    em("Iliad")
-	    mkp.yield(")")
+	    mkp.yield("HMT: ")
+	    a(href: "http://www.homermultitext.org", "home")
 	  }
-
 	  li {
-	    a(href: "scholia", "Read scholia")
-	    mkp.yield(" for ")
-	    em("Iliad")
-	    mkp.yield(" line")
-	    /*
-	    form (action : "mssForScholia", method : "get") {
-	      label(for: "txturn1", "book.line")
-	      input (type : "text", name : "urn", value : demoText, size: "60", id : "txturn1")
-	      input (type : "submit", value : "See texts")
-	      }*/
+	    mkp.yield("HMT Digital: ")
+	    a(href: "home", "home")
+	  }
+	  li {
+	    a(href: "mss", "browse MSS")
+	  }
+	  li {
+	    a(href: "scholia", "scholia")
 	  }
 	}
-	/*
-	  li {
-	    mkp.yield "Browse "
-	    a(href: "mssimgs.html", "images of Homeric manuscripts")
-	  }
-	}
-
-	  p {
-	    mkp.yield("Look up by MS page:")
-	  }
-	  form (action : "facs", method : "get") {
-	    label(for: "pgurn","Page")
-	    input (type : "text", name : "urn", value : demoObject, size: "60", id : "pgurn")
-	    input (type : "submit", value : "See facsimile")
-	  }
-	*/
-	  
-	  h2("Other")
-
-	    ul {
-                li {
-                    mkp.yield ("See an automatically generated")
-                    a(href : "overview", "summary of archival material")
-		    mkp.yield (" (with links to browse contents)")
-                }
-                li {
-                    a(href : "svcforms", "Look up material by URN")
-                }
-            }
-
-        }
-        footer("@htmlfooter@")
+      }
     }
+    
+    article (role : "main") {
+
+      h2("Manuscripts and texts")
+      ul { 
+	li {
+	  a(href: "mss", "Facsimile browser")
+	  mkp.yield (" (MS images with in-progress edition of ")
+	  em("Iliad")
+	  mkp.yield(")")
+	}
+	li {
+	  a(href: "scholia", "Read scholia")
+	  mkp.yield(" for ")
+	  em("Iliad")
+	  mkp.yield(" line")
+	}
+      }
+
+
+      h2("Progess")
+      p {
+	mkp.yield("See a summary of ")
+	a (href: "progress", "progress in the HMT archive")
+	mkp.yield(".")
+      }
+
+      h2("Other")
+      ul {
+	li {
+	  mkp.yield ("See an automatically generated")
+	  a(href : "overview", "summary of archival material")
+	  mkp.yield (" (with links to browse contents)")
+	}
+	li {
+	  a(href : "svcforms", "Look up material by URN")
+	}
+      }
+    }
+    footer("@htmlfooter@")
+  }
 }

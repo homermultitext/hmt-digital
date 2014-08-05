@@ -77,6 +77,12 @@
     <!-- HMT additions: -->
     <servlet-mapping>
         <servlet-name>GroovyServlet</servlet-name>
+        <url-pattern>/progress</url-pattern>
+    </servlet-mapping>
+
+
+    <servlet-mapping>
+        <servlet-name>GroovyServlet</servlet-name>
         <url-pattern>/mssForScholia</url-pattern>
     </servlet-mapping>
 
