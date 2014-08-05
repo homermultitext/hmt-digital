@@ -47,11 +47,19 @@ html.html {
       }
 
 
-      h2("Progess")
-      p {
-	mkp.yield("See a summary of ")
-	a (href: "progress", "progress in the HMT archive")
-	mkp.yield(".")
+      h2("Status of the data archive")
+      p("See a summary of progress:")
+
+      ul {
+	li {
+	  a(href: "imgs.status", "cataloging images")
+	}
+	li {
+	  a(href: "mss.status", "documenting manuscripts")
+	}
+	li {
+	  a(href: "texts.status", "editing texts")
+	}
       }
 
       h2("Other")

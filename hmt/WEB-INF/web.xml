@@ -77,7 +77,7 @@
     <!-- HMT additions: -->
     <servlet-mapping>
         <servlet-name>GroovyServlet</servlet-name>
-        <url-pattern>/progress</url-pattern>
+        <url-pattern>*.status</url-pattern>
     </servlet-mapping>
 
 

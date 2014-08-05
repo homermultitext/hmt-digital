@@ -1,0 +1,98 @@
+
+// rdf prefixes:
+String prefix = "prefix cts: <http://www.homermultitext.org/cts/rdf/>\nprefix cite: <http://www.homermultitext.org/cite/rdf/>\nprefix hmt: <http://www.homermultitext.org/hmt/rdf/>\nprefix citedata: <http://www.homermultitext.org/hmt/citedata/>\nprefix dcterms: <http://purl.org/dc/terms/>\nprefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nprefix  xsd: <http://www.w3.org/2001/XMLSchema#>\nprefix olo: <http://purl.org/ontology/olo/core#>"
+
+
+String getSparqlReply(String acceptType, String query) {
+  String replyString
+  def encodedQuery = URLEncoder.encode(query)
+  def q = "@sparqls@query?query=${encodedQuery}"
+  if (acceptType == "application/json") {
+    q +="&output=json"
+  }
+
+  URL queryUrl = new URL(q)
+  return queryUrl.getText("UTF-8")
+
+}
+
+
+
+/* Labelled counts of CITE Image Collections */
+String imageCounts = """
+${prefix}
+select ?coll ?label (count(?obj) AS ?num) where {
+    ?coll rdf:type cite:ImageArchive  .
+    ?coll rdf:label ?label .
+    ?obj cite:belongsTo ?coll .
+   
+}
+GROUP BY ?coll ?label
+ORDER BY desc(count(?obj))
+"""
+
+
+
+
+html.html {
+  head {
+    title("@projectlabel@: status of image cataloging")
+    link(type : "text/css", rel : "stylesheet", href : "css/browsers.css", title : "CSS stylesheet")
+    link(type : "text/css", rel : "stylesheet", href : "@coreCss@", title : "CSS stylesheet")
+    script(type: "text/javascript", src : "js/jquery.min.js", "  ")
+    script(type: "text/javascript", src : "@citekit@", "  ")
+  }
+  
+  body {
+
+    header(role: "banner") {
+      mkp.yield ("Digital services from the Homer Multitext project")
+      nav(role: "navigation") {
+	ul {
+	  li {
+	    mkp.yield("HMT: ")
+	    a(href: "http://www.homermultitext.org", "home")
+	  }
+	  li {
+	    mkp.yield("HMT Digital: ")
+	    a(href: "home", "home")
+	  }
+
+	  li {
+	    a(href: "mss", "browse MSS")
+	  }
+	  li {
+	    a(href: "scholia", "scholia")
+	  }
+	}
+      }
+    }
+    article {
+
+      h2 ("Summary of status: cataloging images")
+      def slurper = new groovy.json.JsonSlurper()
+      def parsedImgs = slurper.parseText(getSparqlReply("application/json", imageCounts))
+      parsedImgs.results.bindings.each { b ->
+	if (b.num?.value == "1") {
+	  p {
+	    mkp.yield "${b.label?.value}: 1 image ("
+	    a(href : "browseimg?urn=${b.coll?.value}", "see image")
+	    mkp.yield(")")
+	  }
+
+	} else {
+
+	  p {
+	    mkp.yield "${b.label?.value}: ${b.num?.value} images ("
+	    a(href : "browseimg?urn=${b.coll?.value}", "browse")
+	    mkp.yield(")")
+	  }
+	}
+      }
+    }
+    footer("@htmlfooter@")
+  }
+}
+
+
+
