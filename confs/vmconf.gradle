@@ -25,7 +25,7 @@ project.ext {
     projectlabel = "HMT Digital"
 
     // Text to inject into header, footer and nav elements
-    htmlnav = "HMT digital: <a href='home'>Home</a>"
+    htmlnav = "HMT digital: <a href="http://localhost:8880/hmt-digital">Home</a>"
     htmlheader = ""
     htmlfooter = "Software version:  hmt-digital 1.0.  Data set in this service: unpublished nightly build from hmtarchive.  citeservlet is free software developed by Christopher Blackwell and Neel Smith."
 
