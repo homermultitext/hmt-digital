@@ -19,7 +19,7 @@ project.ext {
     /* Project-specific values                    */
     /* *****************************************  */		    
     // Where you will install or run citeservlet
-    homeUrl = "http://localhost:8880/hmt-digital"
+    homeUrl = "http://localhost:8880/hmt-digital/"
 
     // Strings for labelling web pages
     projectlabel = "HMT Digital"
