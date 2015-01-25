@@ -23,8 +23,8 @@ String getSparqlReply(String acceptType, String query) {
 
 String queryString = """
 SELECT ?century ?codex ?label ?folio  WHERE {
-   ?codex <http://www.homermultitext.org/hmt/citedata/codices_pageModel>  ?pgmodel .
-   ?codex <http://www.homermultitext.org/hmt/citedata/codices_century>  ?century  . 
+   ?codex <http://www.homermultitext.org/citedata/codices_pageModel>  ?pgmodel .
+   ?codex <http://www.homermultitext.org/citedata/codices_century>  ?century  . 
    ?codex <http://www.w3.org/1999/02/22-rdf-syntax-ns#label> ?label .
    ?pgmodel <http://www.homermultitext.org/cite/rdf/possesses>  ?folio .
    ?folio  <http://purl.org/ontology/olo/core#item>  ?seq .
@@ -100,7 +100,6 @@ html.html {
     h2("Browse manuscripts")
 
     h3("Start from MS page")
-
     String prevCentury = ""
     pageMap.keySet().each { k ->
       if (centuryMap[k] != prevCentury) {
