@@ -1,0 +1,55 @@
+import org.apache.tools.ant.filters.*
+
+buildscript {
+  repositories {
+    jcenter()
+    // enable this to use snapshot versions of Gretty:
+    // maven { url 'http://oss.jfrog.org/artifactory/oss-snapshot-local' }
+  }
+
+  dependencies {
+    classpath 'org.akhikhl.gretty:gretty:+'
+  }
+}
+
+repositories {
+  jcenter()
+  // enable this to use snapshot versions of Gretty:
+  // maven { url 'http://oss.jfrog.org/artifactory/oss-snapshot-local' }
+}
+
+apply plugin: 'org.akhikhl.gretty'
+apply plugin: "groovy"
+
+
+apply from: "versions.gradle"
+apply from: "confs/conf2.gradle"
+version = "1.0.0"
+
+
+dependencies {
+  compile group: 'org.codehaus.groovy', name: 'groovy-all', version: versionMap['groovy']
+  testCompile group: 'org.codehaus.groovy', name: 'groovy-all', version: versionMap['groovy']
+  testCompile "junit:junit:${versionMap['junit']}"
+}
+
+task seeTokens {
+}
+seeTokens.doLast {
+  tokenMap.each {k,v ->
+    println("${k} -> " + v)
+  }
+}
+
+gretty {
+  webappCopy { CopySpec copySpec ->
+    filesMatching 'home', { FileCopyDetails fileDetails ->
+      logger.warn 'File filtered: {}', fileDetails.path
+      //logger.warn "Used filter map " + tokenMap
+      //filter ( tokenMap, ReplaceTokens)
+      filter ReplaceTokens,   tokens:  tokenMap /* [
+       'htmlfooter' : 'FOOT THIS BILL'
+     ]*/
+    }
+  }
+}

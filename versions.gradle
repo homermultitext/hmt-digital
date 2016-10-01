@@ -1,0 +1,12 @@
+ext {
+
+    versionMap = [
+
+    "groovy": "2.+",
+    "gretty" : "1.4.+"
+    ]
+
+
+    tokenMap = [:]
+
+}
