@@ -5,7 +5,7 @@
     "http://java.sun.com/xml/ns/j2ee
     http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
     version="2.4">
-  
+
 
     <servlet>
       <servlet-name>GroovyServlet</servlet-name>
@@ -24,57 +24,7 @@
         <url-pattern>/home</url-pattern>
     </servlet-mapping>
 
-
-    <servlet-mapping>
-        <servlet-name>GroovyServlet</servlet-name>
-        <url-pattern>/browse</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>GroovyServlet</servlet-name>
-        <url-pattern>/browseimg</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>GroovyServlet</servlet-name>
-        <url-pattern>/browseill</url-pattern>
-    </servlet-mapping>
-
-
-    <servlet-mapping>
-        <servlet-name>GroovyServlet</servlet-name>
-        <url-pattern>/overview</url-pattern>
-    </servlet-mapping>
-
-
-    <servlet-mapping>
-        <servlet-name>GroovyServlet</servlet-name>
-        <url-pattern>/svcforms</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>GroovyServlet</servlet-name>
-        <url-pattern>/images</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>GroovyServlet</servlet-name>
-        <url-pattern>/texts</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>GroovyServlet</servlet-name>
-        <url-pattern>/collections</url-pattern>
-    </servlet-mapping>
-
-
-    <servlet-mapping>
-        <servlet-name>GroovyServlet</servlet-name>
-        <url-pattern>/indices</url-pattern>
-    </servlet-mapping>
-
-
-    <!-- HMT additions: -->
+    
     <servlet-mapping>
         <servlet-name>GroovyServlet</servlet-name>
         <url-pattern>*.status</url-pattern>

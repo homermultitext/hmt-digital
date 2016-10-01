@@ -4,11 +4,13 @@ html.html {
     title("HMT Digital")
     link(type : "text/css", rel : "stylesheet", href : "@coreCss@", title : "CSS stylesheet")
   }
-    
+
   body {
     header (role : "banner"){
       mkp.yield ("Digital services from the Homer Multitext project")
       nav(role : "navigation") {
+
+      
 	ul {
 	  li {
 	    mkp.yield("HMT: ")
@@ -27,11 +29,11 @@ html.html {
 	}
       }
     }
-    
+
     article (role : "main") {
 
       h2("Manuscripts and texts")
-      ul { 
+      ul {
 	li {
 	  a(href: "mss", "Facsimile browser")
 	  mkp.yield (" (MS images with in-progress edition of ")

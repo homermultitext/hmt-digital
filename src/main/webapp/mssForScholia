@@ -81,6 +81,10 @@ html.html {
 	em("Iliad")
 	mkpyield (" ${psg}")
       }
+
+      System.err.println "\n\nUsed query: "
+      System.err.println getQueryString(psg) + "\n\n"
+
       ul {
 	jsonData.results.bindings.each { b ->
 	  li {

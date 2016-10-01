@@ -14,10 +14,15 @@ buildscript {
 
 repositories {
   jcenter()
-  // enable this to use snapshot versions of Gretty:
-  // maven { url 'http://oss.jfrog.org/artifactory/oss-snapshot-local' }
+  maven {
+   url "http://beta.hpcc.uh.edu/nexus/content/groups/public"
+ }
+
+
+
 }
 
+apply plugin: "war"
 apply plugin: 'org.akhikhl.gretty'
 apply plugin: "groovy"
 
@@ -30,6 +35,10 @@ version = "2.0.0"
 dependencies {
   compile group: 'org.codehaus.groovy', name: 'groovy-all', version: versionMap['groovy']
   testCompile group: 'org.codehaus.groovy', name: 'groovy-all', version: versionMap['groovy']
+
+
+compile group: 'edu.harvard.chs', name: 'cite', version: versionMap['cite']
+
   testCompile "junit:junit:${versionMap['junit']}"
 }
 

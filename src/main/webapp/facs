@@ -62,13 +62,13 @@ ORDER BY (?seq)
 String pgQuery(String u) {
 return """
 SELECT ?lnlab ?ln ?seq ?pg ?lbl ?img  ?nxt ?prv WHERE {
-?pg <http://www.homermultitext.org/hmt/rdf/hasDefaultImage> ?img .
+?pg <http://www.homermultitext.org/dse/rdf/hasDefaultImage> ?img .
 ?pg <http://www.w3.org/1999/02/22-rdf-syntax-ns#label> ?lbl .
 
 OPTIONAL {
 
 
-?pg <http://www.homermultitext.org/cite/rdf/hasOnIt> ?ln .
+?pg <http://www.homermultitext.org/dse/rdf/hasOnIt> ?ln .
 ?ln <http://www.homermultitext.org/cts/rdf/hasSequence> ?seq .
 ?ln <http://www.w3.org/1999/02/22-rdf-syntax-ns#label> ?lnlab .
 }
@@ -233,6 +233,13 @@ if (!done) {
 
   def slurper = new groovy.json.JsonSlurper()
   def jsonData =  slurper.parseText(getSparqlReply("application/json", queryString))
+
+
+  
+ System.err.println "\n\nfacs: query for \n" 
+ System.err.println "${queryString}\n\n"
+  
+  
   String pgLabel
   String imgUrn
   String nxtPg = ""
@@ -309,6 +316,8 @@ if (!done) {
       article {
 	  
 	if (iliadLines.size() >= 1) {
+
+
 	    h2("${pgLabel}")
 	    CtsUrn firstLine = new CtsUrn(iliadLines[0])
 	    CtsUrn lastLine = new CtsUrn(iliadLines[iliadLines.size() - 1])
@@ -317,6 +326,10 @@ if (!done) {
 	      mkp.yield "${firstLine.getPassageComponent()}-${lastLine.getPassageComponent()}"
 	    }
 	    String rng = "${firstLine}-${lastLine.getPassageComponent()}"
+	    p("\n\nin citekit compare, use ${rng} with text source @texts@\n\n")
+	    System.err.println ("\n\nin citekit compare, use ${rng} with text source @texts@\n\n")
+
+	    
 	    p(warn)
 	    div (class: "citekit-compare") {
 	      blockquote(class: "cite-image", cite : "${imgUrn}", "${imgUrn}")

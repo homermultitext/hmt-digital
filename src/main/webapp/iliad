@@ -33,7 +33,7 @@ String iliadIndexQuery(String ref) {
 return """
 select ?folio ?ln ?lbl  where {
 
-?folio  <http://www.homermultitext.org/cite/rdf/hasOnIt> ?ln .
+?folio  <http://www.homermultitext.org/dse/rdf/hasOnIt> ?ln .
 ?folio <http://www.w3.org/1999/02/22-rdf-syntax-ns#label> ?lbl .
  FILTER (regex(str(?ln), "^urn:cts:greekLit:tlg0012.tlg001.+:${ref}\$" ) ) .
 } 

@@ -3,7 +3,8 @@ ext {
     versionMap = [
 
     "groovy": "2.+",
-    "gretty" : "1.4.+"
+    "gretty" : "1.4.+",
+    "cite" : "2.+"
     ]
 
 

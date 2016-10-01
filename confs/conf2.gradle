@@ -10,10 +10,10 @@ project.ext {
     /* *************************************************************  */
 
     // 1. Sparql endpoint (used by all services)
-    sparqls  = "http://localhost:3030/ds/"
+
 
     // 2. Absolute or relative URL of IIPSrv fast cgi (used by image service)
-    iipsrv = "http://beta.hpcc.uh.edu/fcgi-bin/iipsrv.fcgi"
+
 
 
 
@@ -29,6 +29,9 @@ project.ext {
 
 
     tokenMap = [
+      "sparqls" : "http://localhost:3030/ds/",
+      "iipsrv": "http://beta.hpcc.uh.edu/fcgi-bin/iipsrv.fcgi",
+
       "homeUrl": "http://localhost:8080/hmt-digital",
       "projectlabel": "HMT Digital",
 
@@ -47,7 +50,7 @@ project.ext {
       // about this: 9000 is a good default.
       detailWidth: "9000",
 
-      coreCss: "css/hmt-core.css",
+      coreCss: "css/cts-core.css",
 
       ckImgSize:  "1000",
       defaultContext:  "0"
