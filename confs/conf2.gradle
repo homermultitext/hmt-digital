@@ -34,7 +34,7 @@ project.ext {
 
       "htmlnav": "HMT digital: <a href='home'>Home</a>",
       "htmlheader": "",
-      "htmlfooter": "Software version:  hmt-digital 1.0.  Data set in this service: unpublished nightly build from hmtarchive.  citeservlet is free software developed by Christopher Blackwell and Neel Smith." ,
+      "htmlfooter": "Software version:  hmt-digital 2.0.  Data set in this service: unpublished nightly build from hmtarchive.  citeservlet is free software developed by Christopher Blackwell and Neel Smith." ,
 
 
       // Default URNs to populate query forms
@@ -50,7 +50,7 @@ project.ext {
       coreCss: "css/hmt-core.css",
 
       ckImgSize:  "1000",
-      defaultContext:  "0" 
+      defaultContext:  "0"
     ]
 
 }
