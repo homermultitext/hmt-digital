@@ -5,12 +5,23 @@ buildscript {
     jcenter()
     // enable this to use snapshot versions of Gretty:
     // maven { url 'http://oss.jfrog.org/artifactory/oss-snapshot-local' }
+    maven {
+      url "http://beta.hpcc.uh.edu/nexus/content/groups/public"
+    }
+
   }
 
   dependencies {
     classpath 'org.akhikhl.gretty:gretty:+'
+    //classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.3'
+    classpath group: 'edu.harvard.chs', name: 'cite', version: "3.+"
   }
+
+
 }
+
+//apply plugin: 'com.github.johnrengelman.shadow'
+
 
 repositories {
   jcenter()

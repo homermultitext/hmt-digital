@@ -43,8 +43,7 @@ SELECT ?cite ?pg ?ln ?seq ?img ?lbl ?nxt ?prv WHERE {
 ?pg <http://www.homermultitext.org/cite/rdf/hasOnIt> ?ln .
 ?ln <http://www.homermultitext.org/cts/rdf/hasSequence> ?seq .
 ?pg <http://www.homermultitext.org/hmt/rdf/hasDefaultImage> ?img .
-?pg <http://www.w3.org/1999/02/22-rdf-syntax-ns#label> ?lbl .
-
+?pg <http://www.w3.org/2000/01/rdf-schema#label> ?lbl .
 
 OPTIONAL {
 ?pg <http://purl.org/ontology/olo/core#next>  ?nxt .
@@ -63,14 +62,14 @@ String pgQuery(String u) {
 return """
 SELECT ?lnlab ?ln ?seq ?pg ?lbl ?img  ?nxt ?prv WHERE {
 ?pg <http://www.homermultitext.org/dse/rdf/hasDefaultImage> ?img .
-?pg <http://www.w3.org/1999/02/22-rdf-syntax-ns#label> ?lbl .
+?pg <http://www.w3.org/2000/01/rdf-schema#label> ?lbl .
 
 OPTIONAL {
 
 
 ?pg <http://www.homermultitext.org/dse/rdf/hasOnIt> ?ln .
 ?ln <http://www.homermultitext.org/cts/rdf/hasSequence> ?seq .
-?ln <http://www.w3.org/1999/02/22-rdf-syntax-ns#label> ?lnlab .
+?ln <http://www.w3.org/2000/01/rdf-schema#label> ?lnlab .
 }
 
 OPTIONAL {
@@ -100,7 +99,7 @@ String errorReport(String s, java.lang.Exception ex) {
       link(type : "text/css", rel : "stylesheet", href : "@coreCss@", title : "CSS stylesheet")
       script(type: "text/javascript", src : "js/jquery.min.js", "  ")
       script(type: "text/javascript", src : "@citekit@", "  ")
-    } 
+    }
     body {
       header(role: "banner") {
 	mkp.yield ("Digital services from the Homer Multitext project")
@@ -157,9 +156,9 @@ String errorReport(String s, java.lang.Exception ex) {
 	    label(for: "ref","book.line")
 	    input (type : "text", name : "ref", value : "1.1", size: "10", id : "ref")
 	    input (type : "submit", value : "See occurrences")
-	  }    
+	  }
 	}
-      }      
+      }
       footer("@htmlfooter@")
     }
   }
@@ -221,7 +220,7 @@ if (!foundUrn) {
 if (!foundUrn) {
   println errorReport(urnStr, new Exception("Please include a parameter named 'urn' with either a valid reference to a line of the Iliad or to a manuscript page."))
   done = true
-} 
+}
 
 if (!done) {
   String msg
@@ -235,11 +234,11 @@ if (!done) {
   def jsonData =  slurper.parseText(getSparqlReply("application/json", queryString))
 
 
-  
- System.err.println "\n\nfacs: query for \n" 
+
+ System.err.println "\n\nfacs: query for \n"
  System.err.println "${queryString}\n\n"
-  
-  
+
+
   String pgLabel
   String imgUrn
   String nxtPg = ""
@@ -258,12 +257,12 @@ if (!done) {
       iliadLines.add(b.ln.value)
     }
   }
-  
+
 
   if (imgUrn == null) {
     println errorReport(urnStr, new Exception("No facsimile found for ${urnStr}"))
   } else {
-  
+
 
     html.html {
     head {
@@ -314,7 +313,7 @@ if (!done) {
       }
       String warn = "(Image linked to view zoomable up to full resolution.)"
       article {
-	  
+
 	if (iliadLines.size() >= 1) {
 
 
@@ -329,24 +328,24 @@ if (!done) {
 	    p("\n\nin citekit compare, use ${rng} with text source @texts@\n\n")
 	    System.err.println ("\n\nin citekit compare, use ${rng} with text source @texts@\n\n")
 
-	    
+
 	    p(warn)
 	    div (class: "citekit-compare") {
 	      blockquote(class: "cite-image", cite : "${imgUrn}", "${imgUrn}")
 	      blockquote(class: "cite-text", cite : "${rng}", "${rng}")
 	    }
-	    
+
 	  } else {
 	  p(warn)
 	  blockquote(class: "cite-image", cite : "${imgUrn}", "${imgUrn}")
 	}
 
       }
-      
+
 
       // citekit magic:
       ul (id: "citekit-sources") {
-	li (class : "citekit-source cite-text citekit-default", id : "defaulttext", "@texts@") 
+	li (class : "citekit-source cite-text citekit-default", id : "defaulttext", "@texts@")
 	li (class : "citekit-source cite-image citekit-default", id : "defaultimage", "data-image-w" : "@ckImgSize@",  "@images@" )
 	li (class : "citekit-source cite-collection citekit-default", id : "defaultcollection", "@collections@" )
       }
@@ -356,5 +355,3 @@ if (!done) {
     }
   }
 }
-
-

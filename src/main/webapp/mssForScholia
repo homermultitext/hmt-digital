@@ -20,8 +20,8 @@ String getQueryString(String ln) {
 SELECT ?mslabel ?ms ?psg (count(?schol) AS ?count) WHERE {
 
   ?ms <http://www.homermultitext.org/cts/rdf/belongsTo> <urn:cts:greekLit:tlg0012.tlg001> .
-  ?ms <http://www.w3.org/1999/02/22-rdf-syntax-ns#label>  ?mslabel .
-  ?psg <http://www.homermultitext.org/cts/rdf/belongsTo>   ?ms . 
+  ?ms <http://www.w3.org/2000/01/rdf-schema#label>  ?mslabel .
+  ?psg <http://www.homermultitext.org/cts/rdf/belongsTo>   ?ms .
   BIND (CONCAT(str(?ms),":${ln}")  AS ?linestr )  .
   ?schol  <http://www.homermultitext.org/hmt/rdf/commentsOn> ?psg .
 
@@ -49,7 +49,7 @@ html.html {
     script(type: "text/javascript", src : "js/jquery.min.js", "  ")
     script(type: "text/javascript", src : "@citekit@", "  ")
   }
-  
+
   body {
 
     header(role: "banner") {
@@ -99,6 +99,3 @@ html.html {
     footer("@htmlfooter@")
   }
 }
-
-
-

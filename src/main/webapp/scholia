@@ -20,7 +20,7 @@ String queryForms() {
   def writer = new StringWriter()
   def xml = new MarkupBuilder(writer)
 
-  
+
   xml.html() {
     head {
       title("@projectlabel@: Find scholia")
@@ -28,7 +28,7 @@ String queryForms() {
       link(type : "text/css", rel : "stylesheet", href : "@coreCss@", title : "CSS stylesheet")
       script(type: "text/javascript", src : "js/jquery.min.js", "  ")
       script(type: "text/javascript", src : "@citekit@", "  ")
-    } 
+    }
     body {
       header(role: "banner") {
 	mkp.yield ("Digital services from the Homer Multitext project")
@@ -125,7 +125,7 @@ String reply = """
   select ?ms ?mslabel ?iliadPic ?scholion ?scholPic where {
     ?scholion hmt:commentsOn <${textUrn}> .
     <${textUrn}>  <http://www.homermultitext.org/cts/rdf/belongsTo> ?ms .
-    ?ms  <http://www.w3.org/1999/02/22-rdf-syntax-ns#label>   ?mslabel .
+    ?ms  <http://www.w3.org/2000/01/rdf-schema#label>   ?mslabel .
     ?scholion cite:illustratedBy ?scholPic .
     optional {
       <${textUrn}> cite:illustratedBy ?iliadPic .
@@ -155,7 +155,7 @@ optional {
 filter (regex(str(?edCites),"urn:cts:greekLit:tlg0012.tlg001.[^:]+:${myPassage}\$","i"))
 
 }
-ORDER BY ?edCites 
+ORDER BY ?edCites
 """
                 return reply
 }
@@ -180,8 +180,8 @@ try {
 if (!urnFound) {
   try {
     String psg = request.getParameter("psg")
-    
-    // ... ?? 
+
+    // ... ??
   } catch (Exception e) {
   }
   }*/
@@ -273,14 +273,14 @@ if (!urnFound){
 	    currentMs = b.edCites.value
 	    h3("Manuscript ${b.edCites.value}")
 	    blockquote(class: "cite-text", cite : "${b.edCites.value}", "${b.edCites.value}")
-	      
+
 	    queryString = illustrationQuery(urnStr, prefix);
 	    textIllustrations = slurper.parseText(getSparqlReply("application/json", queryString))
 	    textIllustrations.results.bindings.each { c ->
 	      blockquote(class: "cite-image", cite : "${c.picture.value}", "${c.picture.value}")
 	      h3("Scholia")
-	    }    
-	  }  
+	    }
+	  }
 
 	  div (class : "citekit-compare") {
 	    if (b.scholia.value.substring(4,8) == 'cite'){
@@ -292,12 +292,12 @@ if (!urnFound){
 	      blockquote(class: "cite-image", cite : "${b?.scholPic?.value}", "${b?.scholPic?.value}")
 	    }
 	  }
-	}    
+	}
 	*/
 
 	// citekit magic:
 	ul (id: "citekit-sources") {
-	  li (class : "citekit-source cite-text citekit-default", id : "defaulttext", "@texts@") 
+	  li (class : "citekit-source cite-text citekit-default", id : "defaulttext", "@texts@")
 	  li (class : "citekit-source cite-image citekit-default", id : "defaultimage", "data-image-w" : "2000",  "@images@" )
 	  li (class : "citekit-source cite-collection citekit-default", id : "defaultcollection", "@collections@" )
 	}
@@ -306,5 +306,3 @@ if (!urnFound){
     }
   }
 }
-
-

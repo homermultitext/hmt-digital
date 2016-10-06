@@ -3,7 +3,7 @@ Do this as a groovlet now so we can develop it into a query off the
 graph that:
 
 - collects page models of codices from the urn:cite:hmt:codices collections
-- finds first element in each 
+- finds first element in each
 */
 
 
@@ -24,8 +24,8 @@ String getSparqlReply(String acceptType, String query) {
 String queryString = """
 SELECT ?century ?codex ?label ?folio  WHERE {
    ?codex <http://www.homermultitext.org/citedata/codices_pageModel>  ?pgmodel .
-   ?codex <http://www.homermultitext.org/citedata/codices_century>  ?century  . 
-   ?codex <http://www.w3.org/1999/02/22-rdf-syntax-ns#label> ?label .
+   ?codex <http://www.homermultitext.org/citedata/codices_century>  ?century  .
+   ?codex <http://www.w3.org/2000/01/rdf-schema#label> ?label .
    ?pgmodel <http://www.homermultitext.org/cite/rdf/possesses>  ?folio .
    ?folio  <http://purl.org/ontology/olo/core#item>  ?seq .
 
@@ -67,7 +67,7 @@ html.html {
     script(type: "text/javascript", src : "js/jquery.min.js", "  ")
     script(type: "text/javascript", src : "@citekit@", "  ")
   }
-  
+
   body {
 
     header(role: "banner") {
@@ -136,7 +136,7 @@ html.html {
       label(for: "ref","book.line")
       input (type : "text", name : "ref", value : "1.1", size: "10", id : "ref")
       input (type : "submit", value : "See occurrences")
-    }    
+    }
 
     p {
       mkp.yield "(Note:  "
@@ -148,6 +148,3 @@ html.html {
     footer("@htmlfooter@")
   }
 }
-
-
-

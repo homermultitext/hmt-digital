@@ -34,9 +34,10 @@ return """
 select ?folio ?ln ?lbl  where {
 
 ?folio  <http://www.homermultitext.org/dse/rdf/hasOnIt> ?ln .
-?folio <http://www.w3.org/1999/02/22-rdf-syntax-ns#label> ?lbl .
+
+?folio <http://www.w3.org/2000/01/rdf-schema#label> ?lbl .
  FILTER (regex(str(?ln), "^urn:cts:greekLit:tlg0012.tlg001.+:${ref}\$" ) ) .
-} 
+}
 order by ?ln
 """
 }
@@ -54,7 +55,7 @@ String errorReport(String s, java.lang.Exception ex) {
       link(type : "text/css", rel : "stylesheet", href : "@coreCss@", title : "CSS stylesheet")
       script(type: "text/javascript", src : "js/jquery.min.js", "  ")
       script(type: "text/javascript", src : "@citekit@", "  ")
-    } 
+    }
     body {
       header(role: "banner") {
 	mkp.yield ("Digital services from the Homer Multitext project")
@@ -94,7 +95,7 @@ String errorReport(String s, java.lang.Exception ex) {
 	    label(for: "ref","book.line")
 	    input (type : "text", name : "ref", value : "1.1", size: "10", id : "ref")
 	    input (type : "submit", value : "See occurrences")
-	  }    
+	  }
 	}
 
       }
@@ -140,7 +141,7 @@ if (!done) {
       script(type: "text/javascript", src : "js/jquery.min.js", "  ")
       script(type: "text/javascript", src : "@citekit@", "  ")
     }
-  
+
     body {
       header(role: "banner") {
 	mkp.yield ("Digital services from the Homer Multitext project")

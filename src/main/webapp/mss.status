@@ -18,9 +18,9 @@ String getSparqlReply(String acceptType, String query) {
 
 String iliadLineCountQuery = """
 select ?ms ?label (count(?ln) AS ?num)  WHERE {
-?ln <http://www.homermultitext.org/cite/rdf/appearsOn> ?folio . 
+?ln <http://www.homermultitext.org/cite/rdf/appearsOn> ?folio .
 ?folio <http://www.homermultitext.org/cite/rdf/belongsTo> ?ms .
-?ms <http://www.w3.org/1999/02/22-rdf-syntax-ns#label> ?label .
+?ms <http://www.w3.org/2000/01/rdf-schema#label> ?label .
 FILTER (regex(str(?ln),"urn:cts:greekLit:tlg0012.tlg001.*" ) ) .
 }
 GROUP BY ?ms ?label
@@ -28,9 +28,9 @@ GROUP BY ?ms ?label
 
 String iliadFolioCountQuery = """
 select ?ms ?label (count(DISTINCT ?folio) AS ?num)  WHERE {
-?ln <http://www.homermultitext.org/cite/rdf/appearsOn> ?folio . 
+?ln <http://www.homermultitext.org/cite/rdf/appearsOn> ?folio .
 ?folio <http://www.homermultitext.org/cite/rdf/belongsTo> ?ms .
-?ms <http://www.w3.org/1999/02/22-rdf-syntax-ns#label> ?label .
+?ms <http://www.w3.org/2000/01/rdf-schema#label> ?label .
 FILTER (regex(str(?ln),"urn:cts:greekLit:tlg0012.tlg001.*" ) ) .
 }
 GROUP BY ?ms ?label
@@ -41,8 +41,8 @@ GROUP BY ?ms ?label
 String browsableQuery = """
 SELECT ?century ?pgmodel ?label (count(?folio) AS ?cnt )  WHERE {
    ?codex <http://www.homermultitext.org/hmt/citedata/codices_pageModel>  ?pgmodel .
-   ?codex <http://www.homermultitext.org/hmt/citedata/codices_century>  ?century  . 
-   ?codex <http://www.w3.org/1999/02/22-rdf-syntax-ns#label> ?label .
+   ?codex <http://www.homermultitext.org/hmt/citedata/codices_century>  ?century  .
+   ?codex <http://www.w3.org/2000/01/rdf-schema#label> ?label .
    ?pgmodel <http://www.homermultitext.org/cite/rdf/possesses>  ?folio .
    ?folio  <http://purl.org/ontology/olo/core#item>  ?seq .
 
@@ -59,7 +59,7 @@ html.html {
     script(type: "text/javascript", src : "js/jquery.min.js", "  ")
     script(type: "text/javascript", src : "@citekit@", "  ")
   }
-  
+
   body {
 
     header(role: "banner") {
@@ -87,14 +87,14 @@ html.html {
     article {
 
       h2 ("Summary of status: documenting manuscripts")
-      
+
       h3 {
 	mkp.yield("Pages of facsimile indexed to")
 	em("Iliad")
 	mkp.yield (" text")
       }
       p {
-	mkp.yield "(Lookup page by " 
+	mkp.yield "(Lookup page by "
 	em("Iliad")
 	mkp.yield (" line ")
 	a (href: "mss", "here")
@@ -108,11 +108,11 @@ html.html {
       indexedPages.results.bindings.each { b ->
 	pagesMap[b.ms.value] = b.num.value
 	/*
-	p { 
+	p {
 	  mkp.yield("${b.label?.value}:  ")
 	  strong("${b.num?.value} lines")
 	  mkp.yield(" indexed.")
-	
+
 	  }*/
       }
 
@@ -142,7 +142,7 @@ html.html {
       }
 	/*
 
-	p { 
+	p {
 	  mkp.yield("${b.label?.value}:  ")
 	  strong("${b.num?.value} lines")
 	  mkp.yield(" indexed.")
@@ -157,7 +157,7 @@ html.html {
 
 
       p {
-	mkp.yield "(Browse facsimiles " 
+	mkp.yield "(Browse facsimiles "
 	a (href: "mss", "here")
 	mkp.yield ".)"
       }
@@ -171,7 +171,7 @@ html.html {
 	  }
 	}
 
-	p { 
+	p {
 	  mkp.yield("${b.label?.value}:  ")
 	  strong("${b.cnt?.value} pages")
 	  mkp.yield(".")
@@ -181,6 +181,3 @@ html.html {
     footer("@htmlfooter@")
   }
 }
-
-
-

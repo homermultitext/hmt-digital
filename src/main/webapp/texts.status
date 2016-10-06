@@ -45,33 +45,33 @@ SELECT ?ms ?mslabel ?status ?level ?label  (count(?status) AS ?num)  WHERE {
 ?status citedata:edstatus_Meaning ?label .
 ?status citedata:edstatus_Tier ?level .
 ?pg cite:belongsTo ?ms .
-?ms <http://www.w3.org/1999/02/22-rdf-syntax-ns#label> ?mslabel .
+?ms <http://www.w3.org/2000/01/rdf-schema#label> ?mslabel .
 
-} 
+}
 GROUP BY ?ms ?mslabel ?level ?status ?label
 ORDER BY ?ms DESC(?level)
 """
 
 String iliadLinesQuery = """
 select ?ms ?label (count(?ln) AS ?num)  WHERE {
-?ln <http://www.homermultitext.org/cite/rdf/appearsOn> ?folio . 
+?ln <http://www.homermultitext.org/cite/rdf/appearsOn> ?folio .
 ?ln  <http://www.homermultitext.org/cts/rdf/belongsTo> ?vers .
 ?vers <http://www.homermultitext.org/cts/rdf/belongsTo>  <urn:cts:greekLit:tlg0012.tlg001> .
-?vers <http://www.w3.org/1999/02/22-rdf-syntax-ns#label> ?label .
+?vers <http://www.w3.org/2000/01/rdf-schema#label> ?label .
 }
-GROUP BY ?ms ?label 
+GROUP BY ?ms ?label
 """
 
 
 String scholiaByDocQuery = """
 select ?ms ?mslabel ?label (count(?ln) AS ?num)  WHERE {
-?ln <http://www.homermultitext.org/cite/rdf/appearsOn> ?folio . 
+?ln <http://www.homermultitext.org/cite/rdf/appearsOn> ?folio .
 ?folio <http://www.homermultitext.org/cite/rdf/belongsTo> ?ms .
-?ms <http://www.w3.org/1999/02/22-rdf-syntax-ns#label> ?mslabel .
+?ms <http://www.w3.org/2000/01/rdf-schema#label> ?mslabel .
 ?ln  <http://www.homermultitext.org/cts/rdf/belongsTo> ?vers .
 ?vers <http://www.homermultitext.org/cts/rdf/belongsTo>  ?wk .
 ?wk <http://www.homermultitext.org/cts/rdf/belongsTo> <urn:cts:greekLit:tlg5026> .
-?vers <http://www.w3.org/1999/02/22-rdf-syntax-ns#label> ?label .
+?vers <http://www.w3.org/2000/01/rdf-schema#label> ?label .
 }
 GROUP BY ?label ?ms ?mslabel
 ORDER BY ?ms DESC(?num)
@@ -88,7 +88,7 @@ html.html {
     script(type: "text/javascript", src : "js/jquery.min.js", "  ")
     script(type: "text/javascript", src : "@citekit@", "  ")
   }
-  
+
   body {
 
     header(role: "banner") {
@@ -116,7 +116,7 @@ html.html {
     article {
 
       h2 ("Summary of status: editing texts")
-      h3 { 
+      h3 {
 	em("Iliad")
       }
       p {
@@ -126,7 +126,7 @@ html.html {
       }
       def ilSlurper = new groovy.json.JsonSlurper()
       def ilLines = ilSlurper.parseText(getSparqlReply("application/json", iliadLinesQuery))
-      ilLines.results.bindings.each { b -> 
+      ilLines.results.bindings.each { b ->
 	p {
 	  mkp.yield("${b.label.value}: ")
 	  strong("${b.num.value} lines")
@@ -142,7 +142,7 @@ html.html {
 
       String prevMs = ""
       Integer msTotal = 0
-      scholia.results.bindings.each { b -> 
+      scholia.results.bindings.each { b ->
 	if (b.ms.value != prevMs) {
 	  if (msTotal != 0) {
 	    p {
@@ -179,10 +179,10 @@ html.html {
       p("Number of pages validated by manuscript:")
       def pgSlurper = new groovy.json.JsonSlurper()
       def pgStatusSummary = pgSlurper.parseText(getSparqlReply("application/json", pageStatusQuery))
-      
+
       prevMs = ""
       Integer total = 0
-      pgStatusSummary.results.bindings.each { b -> 
+      pgStatusSummary.results.bindings.each { b ->
 	if (b.ms.value != prevMs) {
 	  if (total > 0) {
 	    p {
@@ -219,6 +219,3 @@ html.html {
     footer("@htmlfooter@")
   }
 }
-
-
-
