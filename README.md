@@ -1,11 +1,13 @@
-# hmt-digital 1.0.1: digital services of the Homer Multitext project
+# `hmt-digital`: digital services of the Homer Multitext project
 
-This git repository is for customizations of the generic `citeservlet` to 
-provide digital services for the Homer Multitext project.   
+This git repository is for customizations of the generic `cs2` servlet to
+provide digital services for the Homer Multitext project.
+
+
 
 ## Versions ##
 
-The master branch always has the most recent published version (currently, version 1.0 series).  
+The master branch always has the most recent published version (currently, version 1.0 series).
 
 The most recent published version is always installed at <http://www.homermultitext.org/hmt-digital>.
 
