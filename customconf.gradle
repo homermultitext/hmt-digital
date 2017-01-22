@@ -1,0 +1,10 @@
+project.ext {
+
+  overlaySource = "/Users/nsmith/Desktop/cs2work/hmt-digital/hmt"
+
+  customTokens = [
+    "projectName": "Name for your custom project",
+    "customVersion": "demo version"
+  ]
+
+}

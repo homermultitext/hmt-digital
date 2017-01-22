@@ -1,7 +1,6 @@
 # `hmt-digital`: digital services of the Homer Multitext project
 
-This git repository is for customizations of the generic `cs2` servlet to
-provide digital services for the Homer Multitext project.
+This git repository customizes the generic `cs2` servlet to provide digital services for the Homer Multitext project.
 
 
 
@@ -22,8 +21,8 @@ The left-most digit identifies a major version, defined as a version that either
 
 ## Installation and usage##
 
-The HMT project team is beginning development of a virtual machine to run `hmt-digital` (<https://github.com/homermultitext/hmt-digital-vm>).  It is also possible to install the system on
-any machine that can run a servlet container, a SPARQL endpoint, and the gradle build system.
+`hmt-digital` can be installed on
+any machine that can run a servlet container and the gradle build system, and that has access to a SPARQL endpoint with HMT data.
 
 
 
@@ -31,16 +30,14 @@ any machine that can run a servlet container, a SPARQL endpoint, and the gradle 
 
 - gradle: <http://www.gradle.org/>
 - a version 1.1 SPARQL endpoint serving HMT project data (your own, or a publicly visible one such as <http://beta.hpcc.uh.edu:3030/>)
-- a clone of `citeservet`: <https://github.com/cite-architecture/citeservlet>
+- a clone of `cs2`: <https://github.com/cite-architecture/cs2>
 
 
 ### Usage ###
 
-In your clone of `citeservlet`, set the value of `customDir` to the `hmt` directory of this repository.   You can then use the generic `gradle war` or `gradle jettyRunWar` tasks within `citeservlet`.
+1. In the file `customconf.gradle`, give the absolute path to this directory for the property `overlaySource`, and copy `customconf.gradle` to the `customcts` directory of `cs2`.
+2. In `cs2`'s `customcts` directory, run `gradle installSource`
 
-See the documentation in `citeservlet` for more details on how you can configure and customize it.
+You can now use generic `gretty` tasks in `customcts` (e.g., `gretty appRun` to run the servlet or `gretty war` to build a `.war` file).
 
-
-### `citeservlet` configurations ##
-
-The `confs` dir includes configuration files for running HMT Digital locally, or for installing on HMT project systems.
+See the documentation for `cs2` for more details.
